@@ -83,17 +83,17 @@ Los usuarios pueden publicar sus sobrantes tomando una fotografía. Un módulo d
 
 ## 🏗️ Arquitectura
 
-El sistema se compone de dos aplicaciones independientes que se comunican mediante **API REST**:
+El sistema se compone de dos aplicaciones Python independientes que se comunican mediante **API REST**:
 
 ```
 ┌──────────────────────────────┐        REST / JSON        ┌──────────────────────────────┐
 │      revalora-backend        │  ───────────────────────▶ │     revalora-ia-service      │
-│  Java · Spring Boot (MVC)    │                           │       Python · FastAPI       │
-│                              │  ◀─────────────────────── │                              │
+│  Python · FastAPI (MVC)      │                           │       Python · FastAPI       │
+│  :8080                       │  ◀─────────────────────── │       :8000                  │
 │  Vistas · Controladores ·    │   predicciones /          │  Visión artificial ·         │
 │  Servicios · Repositorios    │   recomendaciones         │  Motor de recomendaciones    │
 └──────────────┬───────────────┘                           └──────────────────────────────┘
-               │ JPA
+               │ SQLAlchemy
                ▼
         ┌──────────────┐
         │  PostgreSQL  │
@@ -102,16 +102,16 @@ El sistema se compone de dos aplicaciones independientes que se comunican median
 
 **Backend (MVC)**
 
-- **Model:** entidades JPA organizadas por módulo funcional.
-- **View:** plantillas HTML, CSS y JavaScript organizadas por módulo.
-- **Controller:** recibe las peticiones y delega en la capa de servicios.
-- Capas de apoyo: `service` (lógica de negocio, con interfaz e implementación), `repository` (acceso a datos), `dto` (objetos de entrada y salida), `config`, `security`, `exception` y `util`.
+- **Model:** modelos SQLAlchemy organizados por módulo funcional (`app/models`).
+- **View:** plantillas Jinja2, CSS y JavaScript organizadas por módulo (`app/templates`, `app/static`).
+- **Controller:** routers de FastAPI que reciben las peticiones y delegan en la capa de servicios (`app/controllers`).
+- Capas de apoyo: `services` (lógica de negocio), `repositories` (acceso a datos), `schemas` (esquemas Pydantic de entrada y salida), `core` (configuración y base de datos), `security`, `exceptions` y `utils`.
 
 **Servicio de IA**
 
 - `ml/vision`: reconocimiento y clasificación de materiales a partir de imágenes.
 - `ml/recomendacion`: análisis del producto a fabricar y recomendación de materiales.
-- El backend Java se comunica con este servicio únicamente a través de `IaServiceClient`, de modo que el modelo puede cambiar sin afectar a la aplicación principal.
+- El backend se comunica con este servicio únicamente a través de `app/services/ia/ia_service_client.py`, de modo que el modelo puede cambiar sin afectar a la aplicación principal.
 
 ---
 
@@ -119,12 +119,14 @@ El sistema se compone de dos aplicaciones independientes que se comunican median
 
 **Aplicación principal**
 
-- Java
-- Spring Boot
-- Maven
-- Spring Data JPA
+- Python
+- FastAPI + Uvicorn
+- SQLAlchemy 2 + Alembic (migraciones)
+- Pydantic
+- Jinja2
 - PostgreSQL
 - HTML, CSS y JavaScript
+- pytest
 
 **Servicio de inteligencia artificial**
 
@@ -140,24 +142,25 @@ El sistema se compone de dos aplicaciones independientes que se comunican median
 ```
 REVALORA/
 ├── revalora-backend/
-│   ├── pom.xml
-│   └── src/
-│       ├── main/
-│       │   ├── java/com/revalora/
-│       │   │   ├── config/
-│       │   │   ├── controller/      (usuario, empresa, material, necesidad, ia,
-│       │   │   ├── model/            buscador, coincidencia, transaccion,
-│       │   │   ├── repository/       oportunidad)
-│       │   │   ├── service/
-│       │   │   ├── dto/
-│       │   │   ├── exception/
-│       │   │   ├── security/
-│       │   │   └── util/
-│       │   └── resources/
-│       │       ├── templates/       (vistas HTML por módulo)
-│       │       ├── static/          (css, js, img)
-│       │       └── application.properties
-│       └── test/
+│   ├── requirements.txt
+│   ├── .env.example
+│   ├── alembic.ini
+│   ├── alembic/                 (migraciones)
+│   ├── app/
+│   │   ├── main.py
+│   │   ├── core/                (config, base de datos, logging, web)
+│   │   ├── controllers/         (usuario, empresa, material, necesidad, ia,
+│   │   ├── models/               buscador, coincidencia, transaccion,
+│   │   ├── repositories/         oportunidad)
+│   │   ├── services/
+│   │   ├── schemas/
+│   │   ├── exceptions/
+│   │   ├── security/
+│   │   ├── utils/
+│   │   ├── templates/           (vistas Jinja2 por módulo)
+│   │   └── static/              (css, js, img)
+│   ├── uploads/
+│   └── tests/
 ├── revalora-ia-service/
 │   ├── app/
 │   │   ├── api/v1/endpoints/
@@ -181,10 +184,8 @@ El árbol completo está en [`ESTRUCTURA.txt`](ESTRUCTURA.txt).
 
 ## ⚙️ Requisitos previos
 
-- JDK 17 o superior
-- Maven 3.8 o superior
-- PostgreSQL 14 o superior
 - Python 3.10 o superior
+- PostgreSQL 14 o superior
 - Git
 
 ---
@@ -196,8 +197,8 @@ El árbol completo está en [`ESTRUCTURA.txt`](ESTRUCTURA.txt).
 **1. Clonar el repositorio**
 
 ```bash
-git clone <url-del-repositorio>
-cd REVALORA
+git clone https://github.com/Haziel1357/EagleDev-Innovacion.git
+cd EagleDev-Innovacion
 ```
 
 **2. Base de datos**
@@ -206,14 +207,21 @@ cd REVALORA
 CREATE DATABASE revalora;
 ```
 
-Configura las credenciales en `revalora-backend/src/main/resources/application-dev.properties`.
+Configura las credenciales en `DATABASE_URL`, dentro de `revalora-backend/.env` (se crea en el paso 3).
 
-**3. Backend (Spring Boot)**
+**3. Backend (FastAPI)**
 
 ```bash
 cd revalora-backend
-mvn spring-boot:run
+python -m venv venv
+source venv/bin/activate        # En Windows: venv\Scripts\activate
+pip install -r requirements-dev.txt
+cp .env.example .env
+alembic upgrade head
+uvicorn app.main:app --reload --port 8080
 ```
+
+La aplicación queda en http://localhost:8080 y la documentación de la API en http://localhost:8080/docs.
 
 **4. Servicio de IA (FastAPI)**
 
@@ -234,6 +242,7 @@ uvicorn app.main:app --reload
 
 - [x] Definición de la idea y alineación con los ODS
 - [x] Estructura de carpetas y archivos (MVC + servicio de IA)
+- [x] Migración del backend de Java (Spring Boot) a Python (FastAPI)
 - [ ] Modelo de datos y diagrama entidad-relación
 - [ ] Gestión de usuarios y empresas
 - [ ] Publicación de materiales y necesidades
