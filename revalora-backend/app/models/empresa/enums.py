@@ -1,5 +1,9 @@
-"""Enumeraciones del módulo empresa.
+"""Enumeraciones del módulo empresa."""
 
-Clases previstas:
-- TipoEmpresa
-"""
+from enum import StrEnum
+
+
+class TipoEmpresa(StrEnum):
+    MICROEMPRESA = "MICROEMPRESA"
+    PEQUENA_EMPRESA = "PEQUENA_EMPRESA"
+    EMPRENDIMIENTO = "EMPRENDIMIENTO"

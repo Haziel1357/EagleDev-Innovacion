@@ -2,7 +2,10 @@
 
 from fastapi import APIRouter
 
-from app.controllers.buscador import buscador_inteligente_controller, busqueda_tradicional_controller
+from app.controllers.buscador import (
+    buscador_inteligente_controller,
+    busqueda_tradicional_controller,
+)
 from app.controllers.coincidencia import coincidencia_controller
 from app.controllers.empresa import empresa_controller
 from app.controllers.home import home_controller
