@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+*.egg-info/
+
+# Variables de entorno (usa .env.example como plantilla)
+.env
+
+# Archivos subidos por los usuarios
+revalora-backend/uploads/*
+!revalora-backend/uploads/.gitkeep
+
+# Editores y sistema operativo
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
