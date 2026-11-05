@@ -126,7 +126,6 @@ El sistema se compone de dos aplicaciones Python independientes que se comunican
 - Jinja2
 - PostgreSQL
 - HTML, CSS y JavaScript
-- pytest
 
 **Servicio de inteligencia artificial**
 
@@ -135,6 +134,12 @@ El sistema se compone de dos aplicaciones Python independientes que se comunican
 - Modelo de visión artificial *(por definir)*
 - Módulo de recomendaciones inteligentes *(por definir)*
 
+**Herramientas**
+
+- [uv](https://docs.astral.sh/uv/) (versión de Python, entorno virtual y dependencias del backend)
+- pytest (pruebas)
+- Ruff (formato y análisis de código)
+
 ---
 
 ## 📁 Estructura del proyecto
@@ -142,7 +147,9 @@ El sistema se compone de dos aplicaciones Python independientes que se comunican
 ```
 REVALORA/
 ├── revalora-backend/
-│   ├── requirements.txt
+│   ├── pyproject.toml           (dependencias, gestionadas con uv)
+│   ├── uv.lock
+│   ├── .python-version
 │   ├── .env.example
 │   ├── alembic.ini
 │   ├── alembic/                 (migraciones)
@@ -178,13 +185,13 @@ REVALORA/
 └── docs/
 ```
 
-El árbol completo está en [`ESTRUCTURA.txt`](ESTRUCTURA.txt).
+El árbol completo está en [`ESTRUCTURA.txt`](ESTRUCTURA.txt). El archivo `uv.lock` fija las versiones exactas de las dependencias y se sube al repositorio para que todo el equipo instale lo mismo.
 
 ---
 
 ## ⚙️ Requisitos previos
 
-- Python 3.10 o superior
+- [uv](https://docs.astral.sh/uv/) (instala por sí solo Python 3.12, la versión indicada en `revalora-backend/.python-version`)
 - PostgreSQL 14 o superior
 - Git
 
@@ -192,7 +199,17 @@ El árbol completo está en [`ESTRUCTURA.txt`](ESTRUCTURA.txt).
 
 ## 🚀 Instalación y ejecución
 
-> ⚠️ El proyecto se encuentra en fase de estructura. Estos pasos quedarán operativos a medida que se implementen los módulos.
+> ⚠️ El backend ya es funcional; el servicio de IA sigue en fase de estructura. Sin él, las rutas de reconocimiento, buscador inteligente y oportunidades responden 502.
+
+**0. Instalar uv** (solo una vez)
+
+```bash
+# Windows (PowerShell)
+powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+
+# Linux y macOS
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
 
 **1. Clonar el repositorio**
 
@@ -213,15 +230,13 @@ Configura las credenciales en `DATABASE_URL`, dentro de `revalora-backend/.env` 
 
 ```bash
 cd revalora-backend
-python -m venv venv
-source venv/bin/activate        # En Windows: venv\Scripts\activate
-pip install -r requirements-dev.txt
-cp .env.example .env
-alembic upgrade head
-uvicorn app.main:app --reload --port 8080
+uv sync                         # crea .venv e instala las dependencias
+cp .env.example .env            # En Windows: copy .env.example .env
+uv run alembic upgrade head     # crea las tablas y los datos iniciales
+uv run uvicorn app.main:app --reload --port 8080
 ```
 
-La aplicación queda en http://localhost:8080 y la documentación de la API en http://localhost:8080/docs.
+La aplicación queda en http://localhost:8080 y la documentación de la API en http://localhost:8080/docs. Las pruebas se ejecutan con `uv run pytest`. Más detalles en [`revalora-backend/README.md`](revalora-backend/README.md).
 
 **4. Servicio de IA (FastAPI)**
 
@@ -243,6 +258,8 @@ uvicorn app.main:app --reload
 - [x] Definición de la idea y alineación con los ODS
 - [x] Estructura de carpetas y archivos (MVC + servicio de IA)
 - [x] Migración del backend de Java (Spring Boot) a Python (FastAPI)
+- [x] Gestión de dependencias del backend con uv (`pyproject.toml` + `uv.lock`)
+- [x] API REST del backend para todos los módulos, con migraciones y pruebas
 - [ ] Modelo de datos y diagrama entidad-relación
 - [ ] Gestión de usuarios y empresas
 - [ ] Publicación de materiales y necesidades

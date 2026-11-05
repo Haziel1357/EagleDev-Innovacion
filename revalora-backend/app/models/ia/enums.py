@@ -1,5 +1,12 @@
-"""Enumeraciones del módulo ia.
+"""Enumeraciones del módulo ia."""
 
-Clases previstas:
-- EstadoVerificacion
-"""
+from enum import StrEnum
+
+
+class EstadoVerificacion(StrEnum):
+    PENDIENTE = "PENDIENTE"
+    """La IA clasificó la foto y el usuario aún no responde."""
+    CONFIRMADA = "CONFIRMADA"
+    """El usuario aceptó el material que propuso la IA."""
+    CORREGIDA = "CORREGIDA"
+    """El usuario indicó otro material distinto al propuesto."""

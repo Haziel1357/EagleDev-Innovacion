@@ -2,9 +2,15 @@
 
 from typing import Generic, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 T = TypeVar("T")
+
+
+class EsquemaORM(BaseModel):
+    """Base de las respuestas que se construyen a partir de modelos SQLAlchemy."""
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ApiResponse(BaseModel, Generic[T]):
@@ -25,3 +31,4 @@ class ErrorResponse(BaseModel):
     error: str
     mensaje: str
     ruta: str
+    detalles: list[dict] | None = None

@@ -1,5 +1,0 @@
--r requirements.txt
-
-pytest>=8.3
-# Cliente HTTP que usa el TestClient de Starlette/FastAPI
-httpx2>=2.9

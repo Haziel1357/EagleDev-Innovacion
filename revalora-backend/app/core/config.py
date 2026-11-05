@@ -10,7 +10,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 # Carpeta raíz del backend (revalora-backend/).
 BASE_DIR = Path(__file__).resolve().parents[2]
 
-_SECRET_KEY_DESARROLLO = "solo-para-desarrollo-cambiar"
+_SECRET_KEY_DESARROLLO = "solo-para-desarrollo-cambiar-en-produccion"
 
 
 class Settings(BaseSettings):
@@ -44,6 +44,8 @@ class Settings(BaseSettings):
     def _validar_produccion(self) -> "Settings":
         if self.entorno == "prod" and self.secret_key == _SECRET_KEY_DESARROLLO:
             raise ValueError("SECRET_KEY debe definirse en producción.")
+        if len(self.secret_key.encode()) < 32:
+            raise ValueError("SECRET_KEY debe tener al menos 32 caracteres.")
         return self
 
     @cached_property

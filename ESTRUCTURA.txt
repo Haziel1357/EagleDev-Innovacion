@@ -11,6 +11,7 @@ REVALORA/docs/modelo-datos.md
 REVALORA/docs/modulos.md
 REVALORA/revalora-backend
 REVALORA/revalora-backend/.env.example
+REVALORA/revalora-backend/.python-version
 REVALORA/revalora-backend/README.md
 REVALORA/revalora-backend/alembic
 REVALORA/revalora-backend/alembic.ini
@@ -19,6 +20,8 @@ REVALORA/revalora-backend/alembic/env.py
 REVALORA/revalora-backend/alembic/script.py.mako
 REVALORA/revalora-backend/alembic/versions
 REVALORA/revalora-backend/alembic/versions/.gitkeep
+REVALORA/revalora-backend/alembic/versions/0001_esquema_inicial.py
+REVALORA/revalora-backend/alembic/versions/0002_datos_iniciales.py
 REVALORA/revalora-backend/app
 REVALORA/revalora-backend/app/__init__.py
 REVALORA/revalora-backend/app/controllers
@@ -117,6 +120,7 @@ REVALORA/revalora-backend/app/models/usuario/rol.py
 REVALORA/revalora-backend/app/models/usuario/usuario.py
 REVALORA/revalora-backend/app/repositories
 REVALORA/revalora-backend/app/repositories/__init__.py
+REVALORA/revalora-backend/app/repositories/base_repository.py
 REVALORA/revalora-backend/app/repositories/buscador
 REVALORA/revalora-backend/app/repositories/buscador/__init__.py
 REVALORA/revalora-backend/app/repositories/buscador/busqueda_fabricacion_repository.py
@@ -294,9 +298,7 @@ REVALORA/revalora-backend/app/utils/archivo_util.py
 REVALORA/revalora-backend/app/utils/constantes.py
 REVALORA/revalora-backend/app/utils/geo_distancia.py
 REVALORA/revalora-backend/app/utils/paginacion.py
-REVALORA/revalora-backend/pytest.ini
-REVALORA/revalora-backend/requirements-dev.txt
-REVALORA/revalora-backend/requirements.txt
+REVALORA/revalora-backend/pyproject.toml
 REVALORA/revalora-backend/tests
 REVALORA/revalora-backend/tests/conftest.py
 REVALORA/revalora-backend/tests/controllers
@@ -305,7 +307,7 @@ REVALORA/revalora-backend/tests/controllers/buscador/.gitkeep
 REVALORA/revalora-backend/tests/controllers/coincidencia
 REVALORA/revalora-backend/tests/controllers/coincidencia/.gitkeep
 REVALORA/revalora-backend/tests/controllers/empresa
-REVALORA/revalora-backend/tests/controllers/empresa/.gitkeep
+REVALORA/revalora-backend/tests/controllers/empresa/test_empresa_controller.py
 REVALORA/revalora-backend/tests/controllers/ia
 REVALORA/revalora-backend/tests/controllers/ia/.gitkeep
 REVALORA/revalora-backend/tests/controllers/material
@@ -313,11 +315,11 @@ REVALORA/revalora-backend/tests/controllers/material/test_material_sobrante_cont
 REVALORA/revalora-backend/tests/controllers/necesidad
 REVALORA/revalora-backend/tests/controllers/necesidad/.gitkeep
 REVALORA/revalora-backend/tests/controllers/oportunidad
-REVALORA/revalora-backend/tests/controllers/oportunidad/.gitkeep
+REVALORA/revalora-backend/tests/controllers/oportunidad/test_oportunidad_controller.py
 REVALORA/revalora-backend/tests/controllers/transaccion
-REVALORA/revalora-backend/tests/controllers/transaccion/.gitkeep
+REVALORA/revalora-backend/tests/controllers/transaccion/test_solicitud_controller.py
 REVALORA/revalora-backend/tests/controllers/usuario
-REVALORA/revalora-backend/tests/controllers/usuario/.gitkeep
+REVALORA/revalora-backend/tests/controllers/usuario/test_auth_controller.py
 REVALORA/revalora-backend/tests/repositories
 REVALORA/revalora-backend/tests/repositories/buscador
 REVALORA/revalora-backend/tests/repositories/buscador/.gitkeep
@@ -345,6 +347,7 @@ REVALORA/revalora-backend/tests/services/coincidencia/test_motor_coincidencia_se
 REVALORA/revalora-backend/tests/services/empresa
 REVALORA/revalora-backend/tests/services/empresa/.gitkeep
 REVALORA/revalora-backend/tests/services/ia
+REVALORA/revalora-backend/tests/services/ia/test_ia_service_client.py
 REVALORA/revalora-backend/tests/services/ia/test_reconocimiento_material_service.py
 REVALORA/revalora-backend/tests/services/material
 REVALORA/revalora-backend/tests/services/material/.gitkeep
@@ -359,6 +362,7 @@ REVALORA/revalora-backend/tests/services/usuario/.gitkeep
 REVALORA/revalora-backend/tests/test_main.py
 REVALORA/revalora-backend/uploads
 REVALORA/revalora-backend/uploads/.gitkeep
+REVALORA/revalora-backend/uv.lock
 REVALORA/revalora-ia-service
 REVALORA/revalora-ia-service/.env.example
 REVALORA/revalora-ia-service/Dockerfile
