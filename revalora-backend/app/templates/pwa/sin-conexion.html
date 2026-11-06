@@ -1,0 +1,41 @@
+{#- Página que muestra el service worker al navegar sin red. No extiende la plantilla
+    base: se guarda una sola vez para todos y no debe llevar la sesión de nadie. -#}
+{% from "fragments/iconos.html" import logo %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="{{ color_tema }}">
+    <title>Sin conexión · REVALORA</title>
+    <link rel="icon" href="{{ url_for('static', path='img/logos/favicon.svg') }}" type="image/svg+xml">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/main.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/componentes.css') }}">
+</head>
+<body>
+    <header class="cabecera">
+        <div class="contenedor cabecera__barra">
+            <a class="marca" href="{{ url_for('inicio') }}" aria-label="REVALORA, ir al inicio">
+                {{ logo() }}
+                <span>REVALORA</span>
+            </a>
+        </div>
+    </header>
+
+    <main id="contenido">
+        <section class="contenedor contenedor--estrecho pagina">
+            <div class="vacio">
+                <div class="vacio__icono" aria-hidden="true">📡</div>
+                <h1>Sin conexión</h1>
+                <p>No pudimos conectarnos con REVALORA. Revisa tu conexión a internet: la página se recargará sola cuando vuelvas a estar en línea.</p>
+                <button type="button" class="boton" onclick="location.reload()">Reintentar</button>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        window.addEventListener("online", () => location.reload());
+    </script>
+</body>
+</html>

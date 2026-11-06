@@ -332,6 +332,11 @@ main {
     margin-left: auto;
 }
 
+/* Instalar la PWA: en escritorio no cabe en la barra (el navegador ofrece su propio botón). */
+.boton.nav__instalar {
+    display: none;
+}
+
 /* Menú de la cuenta */
 .menu-cuenta {
     position: relative;
@@ -467,6 +472,19 @@ main {
     color: #fff;
 }
 
+.pie__boton {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: rgb(255 255 255 / 0.72);
+    font-size: inherit;
+    cursor: pointer;
+}
+
+.pie__boton:hover {
+    color: #fff;
+}
+
 .pie__legal {
     padding-block: var(--esp-4);
     border-top: 1px solid rgb(255 255 255 / 0.1);
@@ -512,7 +530,8 @@ main {
 
 /* La barra completa (4 enlaces + publicar + cuenta) necesita ~1080 px. */
 @media (max-width: 1080px) {
-    .boton.nav__alternar {
+    .boton.nav__alternar,
+    .boton.nav__instalar {
         display: inline-flex;
     }
 

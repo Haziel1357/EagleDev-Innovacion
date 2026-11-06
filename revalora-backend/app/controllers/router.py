@@ -25,7 +25,7 @@ from app.controllers.api.necesidad import necesidad_material_controller
 from app.controllers.api.oportunidad import oportunidad_productiva_controller
 from app.controllers.api.transaccion import historial_operacion_controller, solicitud_controller
 from app.controllers.api.usuario import auth_controller, usuario_controller
-from app.controllers.web import paginas_controller
+from app.controllers.web import paginas_controller, pwa_controller
 from app.controllers.web.home import home_controller
 from app.core.config import PREFIJO_API
 
@@ -46,7 +46,7 @@ _CONTROLADORES_API = (
     oportunidad_productiva_controller,
 )
 
-_CONTROLADORES_WEB = (home_controller, paginas_controller)
+_CONTROLADORES_WEB = (home_controller, paginas_controller, pwa_controller)
 
 api_router = APIRouter(prefix=PREFIJO_API)
 for controlador in _CONTROLADORES_API:

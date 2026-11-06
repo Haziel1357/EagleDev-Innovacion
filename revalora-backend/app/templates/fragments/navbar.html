@@ -15,6 +15,8 @@
     </ul>
 
     <div class="nav__cuenta">
+        {#- Solo en el menú móvil; static/js/pwa.js lo muestra si se puede instalar. #}
+        <button class="boton boton--secundario nav__instalar" type="button" data-instalar-app hidden>{{ icono("descargar") }} Instalar app</button>
         {% if usuario %}
             {% if usuario.empresa %}
             <a class="boton boton--acento" href="{{ url_for('pagina_publicar_material') }}">{{ icono("mas") }} Publicar sobrante</a>

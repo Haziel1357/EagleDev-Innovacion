@@ -16,9 +16,13 @@ if TYPE_CHECKING:
 
 APP_DIR = Path(__file__).resolve().parents[1]
 
+# Color de la barra del navegador y de la app instalada (PWA): --verde-600 de main.css.
+COLOR_TEMA = "#1d7a4f"
+
 templates = Jinja2Templates(directory=APP_DIR / "templates")
 templates.env.globals.update(
     nombre_app=settings.nombre_app,
+    color_tema=COLOR_TEMA,
     prefijo_api=PREFIJO_API,
     etiquetas=ETIQUETAS,
     etiquetas_json=etiquetas_json(),

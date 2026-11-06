@@ -61,6 +61,7 @@ Los usuarios pueden publicar sus sobrantes tomando una fotografía. Un módulo d
 | 🔗 **Motor de coincidencias** | Cruza ofertas y necesidades y calcula una puntuación de compatibilidad según material, dimensiones, cantidad, estado, ubicación y precio. |
 | 🤝 **Intercambios y transacciones** | Solicitudes de compra o intercambio, aceptación o rechazo, estados e historial de operaciones. |
 | 💡 **Oportunidades productivas** | Sugiere productos que se pueden fabricar con los materiales disponibles e indica qué materiales faltan. |
+| 📱 **App instalable (PWA)** | Se instala en el celular o el computador como una aplicación, con su propio ícono y ventana, y muestra una página de aviso cuando no hay conexión. |
 
 ---
 
@@ -126,6 +127,7 @@ El sistema se compone de dos aplicaciones Python independientes que se comunican
 - Jinja2
 - PostgreSQL
 - HTML, CSS y JavaScript
+- Aplicación web progresiva (PWA): manifest y service worker
 
 **Servicio de inteligencia artificial**
 
@@ -266,6 +268,7 @@ Documentación en http://localhost:8000/docs y salud en http://localhost:8000/ap
 - [x] Gestión de dependencias del backend con uv (`pyproject.toml` + `uv.lock`)
 - [x] API REST del backend para todos los módulos, con migraciones y pruebas
 - [x] Servicio de IA: reconocimiento de materiales (CLIP), recomendación de materiales y oportunidades productivas, con pruebas
+- [x] Aplicación web progresiva (PWA): instalable y con página sin conexión
 - [ ] Modelo de datos y diagrama entidad-relación
 - [ ] Gestión de usuarios y empresas
 - [ ] Publicación de materiales y necesidades

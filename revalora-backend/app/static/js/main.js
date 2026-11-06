@@ -137,9 +137,10 @@
         info: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>',
     };
 
+    /** Muestra un aviso flotante y lo devuelve. Con duracion 0 queda hasta que se cierre. */
     function avisar(mensaje, tipo = "exito", duracion = 5000) {
         const contenedor = $("#avisos");
-        if (!contenedor) return;
+        if (!contenedor) return null;
         const aviso = document.createElement("div");
         aviso.className = `alerta alerta--${tipo} aviso`;
         aviso.setAttribute("role", tipo === "error" ? "alert" : "status");
@@ -151,6 +152,7 @@
         $(".aviso__cerrar", aviso).addEventListener("click", cerrar);
         contenedor.append(aviso);
         if (duracion) setTimeout(cerrar, duracion);
+        return aviso;
     }
 
     const CLAVE_AVISO = "revalora:aviso";

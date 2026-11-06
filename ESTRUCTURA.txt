@@ -67,6 +67,7 @@ REVALORA/revalora-backend/app/controllers/web/__init__.py
 REVALORA/revalora-backend/app/controllers/web/home
 REVALORA/revalora-backend/app/controllers/web/home/__init__.py
 REVALORA/revalora-backend/app/controllers/web/home/home_controller.py
+REVALORA/revalora-backend/app/controllers/web/pwa_controller.py
 REVALORA/revalora-backend/app/core
 REVALORA/revalora-backend/app/core/__init__.py
 REVALORA/revalora-backend/app/core/config.py
@@ -236,6 +237,12 @@ REVALORA/revalora-backend/app/static/img/iconos
 REVALORA/revalora-backend/app/static/img/iconos/.gitkeep
 REVALORA/revalora-backend/app/static/img/logos
 REVALORA/revalora-backend/app/static/img/logos/.gitkeep
+REVALORA/revalora-backend/app/static/img/logos/apple-touch-icon.png
+REVALORA/revalora-backend/app/static/img/logos/favicon.svg
+REVALORA/revalora-backend/app/static/img/logos/icono-192.png
+REVALORA/revalora-backend/app/static/img/logos/icono-512.png
+REVALORA/revalora-backend/app/static/img/logos/icono-maskable-512.png
+REVALORA/revalora-backend/app/static/img/logos/icono-maskable.svg
 REVALORA/revalora-backend/app/static/img/materiales
 REVALORA/revalora-backend/app/static/img/materiales/.gitkeep
 REVALORA/revalora-backend/app/static/js
@@ -251,6 +258,7 @@ REVALORA/revalora-backend/app/static/js/modulos/necesidad.js
 REVALORA/revalora-backend/app/static/js/modulos/oportunidad.js
 REVALORA/revalora-backend/app/static/js/modulos/transaccion.js
 REVALORA/revalora-backend/app/static/js/modulos/usuario.js
+REVALORA/revalora-backend/app/static/js/pwa.js
 REVALORA/revalora-backend/app/templates
 REVALORA/revalora-backend/app/templates/buscador
 REVALORA/revalora-backend/app/templates/buscador/buscador-inteligente.html
@@ -290,6 +298,9 @@ REVALORA/revalora-backend/app/templates/necesidad/lista.html
 REVALORA/revalora-backend/app/templates/oportunidad
 REVALORA/revalora-backend/app/templates/oportunidad/detalle.html
 REVALORA/revalora-backend/app/templates/oportunidad/lista.html
+REVALORA/revalora-backend/app/templates/pwa
+REVALORA/revalora-backend/app/templates/pwa/sin-conexion.html
+REVALORA/revalora-backend/app/templates/pwa/sw.js
 REVALORA/revalora-backend/app/templates/transaccion
 REVALORA/revalora-backend/app/templates/transaccion/detalle-solicitud.html
 REVALORA/revalora-backend/app/templates/transaccion/historial.html

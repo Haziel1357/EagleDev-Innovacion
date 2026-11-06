@@ -6,6 +6,13 @@
     <meta name="description" content="{% block descripcion %}REVALORA conecta a las empresas que generan materiales sobrantes con quienes los necesitan como materia prima.{% endblock %}">
     <title>{% block titulo %}REVALORA · Materiales sobrantes con nueva vida{% endblock %}</title>
     <link rel="icon" href="{{ url_for('static', path='img/logos/favicon.svg') }}" type="image/svg+xml">
+    {# PWA: instalación en el dispositivo (manifest) y equivalentes para iOS. #}
+    <link rel="manifest" href="{{ url_for('manifest') }}">
+    <meta name="theme-color" content="{{ color_tema }}">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="{{ nombre_app }}">
+    <link rel="apple-touch-icon" href="{{ url_for('static', path='img/logos/apple-touch-icon.png') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
@@ -30,11 +37,13 @@
             sesion: {{ sesion | default(none) | tojson }},
             etiquetas: {{ etiquetas_json | tojson }},
             solicitudPorOferta: {{ solicitud_por_oferta | tojson }},
-            tamanoMaximoMb: {{ tamano_maximo_archivo_mb }}
+            tamanoMaximoMb: {{ tamano_maximo_archivo_mb }},
+            serviceWorker: {{ url_for('service_worker').path | tojson }}
         };
     </script>
     <script src="{{ url_for('static', path='js/api-client.js') }}"></script>
     <script src="{{ url_for('static', path='js/main.js') }}"></script>
+    <script src="{{ url_for('static', path='js/pwa.js') }}"></script>
     {% block scripts %}{% endblock %}
 </body>
 </html>

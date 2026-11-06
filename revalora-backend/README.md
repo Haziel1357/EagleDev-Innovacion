@@ -134,6 +134,31 @@ Piezas compartidas:
 - `app/utils/etiquetas.py`: textos legibles de las enumeraciones; llegan a las plantillas (`etiquetas`) y al JS (`Revalora.etiquetas`).
 - `static/css/main.css` (tokens de diseño y layout), `componentes.css` (botones, formularios, tarjetas…) y `css/modulos/*.css` por pantalla.
 
+### Aplicación web progresiva (PWA)
+
+REVALORA se puede instalar como aplicación en el celular o el computador: Chrome, Edge y Android ofrecen **Instalar app**; en iPhone y iPad se usa Compartir → *Agregar a inicio*. Se abre en su propia ventana, con ícono, colores de la marca y atajos. Las rutas están en `app/controllers/web/pwa_controller.py`:
+
+| Ruta | Qué es |
+|---|---|
+| `/manifest.webmanifest` | Nombre, íconos (`static/img/logos/icono-*.png`), colores, `display: standalone` y atajos (Explorar materiales, Publicar un sobrante, Necesidades, Buscador IA). |
+| `/sw.js` | Service worker (plantilla `templates/pwa/sw.js`). Va en la raíz porque solo controla las páginas que quedan por debajo de su ruta. |
+| `/sin-conexion` | Página que se muestra al navegar sin red (`templates/pwa/sin-conexion.html`). |
+
+Qué hace el service worker con cada petición:
+
+- **Páginas:** siempre desde la red; sin conexión muestra `/sin-conexion`. No se guardan porque llevan los datos de la sesión del usuario.
+- **`/static`:** primero la red y, sin conexión, la última copia guardada. Con red nunca se sirven CSS ni JS viejos, tampoco mientras se desarrolla.
+- **Google Fonts:** primero la caché (sus archivos no cambian).
+- **API (`/api/v1`) y `/uploads`:** no las toca; van siempre a la red.
+
+La versión del service worker es una huella de `static/` y `templates/pwa/` que se calcula al arrancar: si un despliegue cambia algo, el navegador instala el service worker nuevo y borra las cachés anteriores, sin cambiar nada a mano.
+
+`static/js/pwa.js` registra el service worker, muestra los botones `[data-instalar-app]` (en el menú móvil y en el pie de página) cuando el navegador permite instalar la app, y avisa al perder o recuperar la conexión.
+
+Los service workers solo funcionan en **HTTPS** o en `localhost`. Para instalar la app desde un celular hace falta servirla por HTTPS (en producción, o en desarrollo con un túnel como `ngrok` o `cloudflared`). En Chrome, *DevTools → Application* muestra el manifest, el service worker y las cachés, y *Network → Offline* simula la falta de red.
+
+Los PNG de los íconos se generaron desde `static/img/logos/favicon.svg` (íconos normales) e `icono-maskable.svg` (fondo completo, para el ícono `maskable` de Android y `apple-touch-icon.png`). Si cambia el logo, hay que volver a generarlos.
+
 ## Estructura
 
 ```
