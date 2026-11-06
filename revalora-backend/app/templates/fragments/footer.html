@@ -1,0 +1,26 @@
+{% from "fragments/iconos.html" import logo %}
+<footer class="pie">
+    <div class="contenedor pie__contenido">
+        <div>
+            <a class="marca" href="{{ url_for('inicio') }}">{{ logo() }} <span>REVALORA</span></a>
+            <p>Lo que para una empresa es un desperdicio, para otra puede convertirse en materia prima. Conectamos sobrantes con nuevas oportunidades.</p>
+        </div>
+        <div>
+            <h4>Plataforma</h4>
+            <ul>
+                <li><a href="{{ url_for('pagina_materiales') }}">Explorar materiales</a></li>
+                <li><a href="{{ url_for('pagina_necesidades') }}">Necesidades de materiales</a></li>
+                <li><a href="{{ url_for('pagina_publicar_material') }}">Publicar un sobrante</a></li>
+                <li><a href="{{ url_for('pagina_registro') }}">Crear cuenta</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4>Proyecto</h4>
+            <ul>
+                <li><a href="/docs">Documentación de la API</a></li>
+                <li><a href="https://sdgs.un.org/es/goals/goal8" target="_blank" rel="noopener">ODS 8 · Trabajo decente</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="contenedor pie__legal">© {{ nombre_app }} · Economía circular para micro y pequeñas empresas.</div>
+</footer>

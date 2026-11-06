@@ -1,0 +1,101 @@
+/* REVALORA · necesidades de materiales */
+
+.rejilla-necesidades {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--esp-4);
+}
+
+.necesidad-tarjeta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--esp-3);
+    padding: var(--esp-5);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-left: 4px solid var(--tierra-500);
+    border-radius: var(--radio-lg);
+    color: inherit;
+    text-decoration: none;
+    transition: transform var(--transicion), box-shadow var(--transicion);
+}
+
+.necesidad-tarjeta:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--sombra-lg);
+    color: inherit;
+}
+
+.necesidad-tarjeta__cabecera {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--esp-3);
+}
+
+.necesidad-tarjeta__emoji {
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    font-size: 1.4rem;
+}
+
+.necesidad-tarjeta__busca {
+    display: block;
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--tierra-600);
+}
+
+.necesidad-tarjeta h3 {
+    margin: 2px 0 0;
+    font-size: var(--texto-base);
+}
+
+.necesidad-tarjeta__datos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-2);
+}
+
+.necesidad-tarjeta__pie {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--esp-2);
+    margin-top: auto;
+    padding-top: var(--esp-3);
+    border-top: 1px solid var(--borde);
+    font-size: var(--texto-xs);
+    color: var(--texto-3);
+}
+
+.necesidad-tarjeta__pie strong {
+    color: var(--texto-2);
+}
+
+.necesidad-cabecera {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--esp-4);
+    margin-bottom: var(--esp-4);
+}
+
+.necesidad-cabecera .necesidad-tarjeta__emoji {
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    font-size: 2rem;
+}
+
+.necesidad-cabecera h1 {
+    margin: var(--esp-1) 0 var(--esp-2);
+}
+
+.estado-necesidad-ABIERTA { background: var(--verde-100); color: var(--verde-800); }
+.estado-necesidad-ATENDIDA { background: var(--info-fondo); color: var(--info); }
+.estado-necesidad-CERRADA { background: var(--superficie-2); color: var(--texto-3); }

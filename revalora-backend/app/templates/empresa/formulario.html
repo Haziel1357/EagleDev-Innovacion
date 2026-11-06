@@ -1,0 +1,135 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% set editando = usuario.empresa is not none %}
+{% block titulo %}{{ "Mi empresa" if editando else "Registrar empresa" }} · REVALORA{% endblock %}
+{% block pagina %}empresa-formulario{% endblock %}
+{% block datos_pagina %}{% if editando %}data-empresa-id="{{ usuario.empresa.id }}"{% endif %}{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/empresa.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor contenedor--estrecho pagina">
+    <div class="pagina__cabecera">
+        <div>
+            <h1>{{ "Datos de mi empresa" if editando else "Registra tu empresa" }}</h1>
+            <p>{{ "Mantén al día la información que ven los demás." if editando else "Tus publicaciones y solicitudes se harán a nombre de tu empresa o emprendimiento." }}</p>
+        </div>
+        {% if editando %}
+        <a class="boton boton--secundario" href="{{ url_for('pagina_empresa', empresa_id=usuario.empresa.id) }}">{{ icono("ojo") }} Ver perfil público</a>
+        {% endif %}
+    </div>
+
+    <form class="pila pila--lg" id="formulario-empresa" novalidate>
+        <div class="alerta alerta--error formulario__error" hidden></div>
+
+        <div class="seccion-formulario">
+            <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">1</span> Información general</h2>
+
+            <div class="campo">
+                <label for="nombre">Nombre de la empresa o emprendimiento</label>
+                <input id="nombre" name="nombre" required minlength="2" maxlength="150" autocomplete="organization">
+            </div>
+
+            <div class="campo">
+                <span class="campo__etiqueta" id="etiqueta-tipo">Tipo</span>
+                <div class="opciones" role="radiogroup" aria-labelledby="etiqueta-tipo">
+                    {% set descripciones = {
+                        "MICROEMPRESA": "Hasta 10 trabajadores.",
+                        "PEQUENA_EMPRESA": "Entre 11 y 50 trabajadores.",
+                        "EMPRENDIMIENTO": "Proyecto en etapa inicial.",
+                    } %}
+                    {% for valor, texto in etiquetas.tipo_empresa.items() %}
+                    <label class="opcion">
+                        <input type="radio" name="tipo" value="{{ valor }}" required {% if loop.first %}checked{% endif %}>
+                        <strong>{{ texto }}</strong>
+                        <span>{{ descripciones[valor] }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="rejilla-campos rejilla-campos--2">
+                <div class="campo">
+                    <label for="identificacion">NIT o RUT <span class="campo__opcional">(opcional)</span></label>
+                    <input id="identificacion" name="identificacion" maxlength="30" data-enviar-vacio>
+                </div>
+                <div class="campo">
+                    <label for="actividad_economica_id">Actividad económica <span class="campo__opcional">(opcional)</span></label>
+                    <select id="actividad_economica_id" name="actividad_economica_id" data-enviar-vacio>
+                        <option value="">Selecciona una actividad</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="campo">
+                <label for="descripcion">¿Qué hace tu empresa? <span class="campo__opcional">(opcional)</span></label>
+                <textarea id="descripcion" name="descripcion" maxlength="2000" data-enviar-vacio
+                          placeholder="Ej.: Fabricamos muebles de madera a medida y nos sobran retazos de pino y MDF."></textarea>
+            </div>
+        </div>
+
+        <div class="seccion-formulario">
+            <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">2</span> Contacto</h2>
+            <div class="rejilla-campos rejilla-campos--2">
+                <div class="campo">
+                    <label for="telefono">Teléfono <span class="campo__opcional">(opcional)</span></label>
+                    <input id="telefono" name="telefono" type="tel" maxlength="30" data-enviar-vacio autocomplete="tel">
+                </div>
+                <div class="campo">
+                    <label for="email">Correo de contacto <span class="campo__opcional">(opcional)</span></label>
+                    <input id="email" name="email" type="email" data-enviar-vacio autocomplete="email">
+                </div>
+            </div>
+        </div>
+
+        <div class="seccion-formulario">
+            <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">3</span> Ubicación</h2>
+            <p class="campo__ayuda">La ubicación permite calcular la distancia a los materiales y priorizar las coincidencias cercanas.</p>
+
+            <div class="rejilla-campos rejilla-campos--3">
+                <div class="campo">
+                    <label for="ciudad">Ciudad</label>
+                    <input id="ciudad" name="ubicacion.ciudad" required minlength="2" maxlength="100" autocomplete="address-level2">
+                </div>
+                <div class="campo">
+                    <label for="region">Departamento o región <span class="campo__opcional">(opcional)</span></label>
+                    <input id="region" name="ubicacion.region" maxlength="100" data-enviar-vacio autocomplete="address-level1">
+                </div>
+                <div class="campo">
+                    <label for="pais">País</label>
+                    <input id="pais" name="ubicacion.pais" maxlength="100" value="Colombia" autocomplete="country-name">
+                </div>
+            </div>
+            <div class="campo">
+                <label for="direccion">Dirección <span class="campo__opcional">(opcional)</span></label>
+                <input id="direccion" name="ubicacion.direccion" maxlength="255" data-enviar-vacio autocomplete="street-address">
+            </div>
+
+            <div class="coordenadas">
+                <div class="rejilla-campos rejilla-campos--2">
+                    <div class="campo">
+                        <label for="latitud">Latitud <span class="campo__opcional">(opcional)</span></label>
+                        <input id="latitud" name="ubicacion.latitud" type="number" step="any" min="-90" max="90" data-enviar-vacio>
+                    </div>
+                    <div class="campo">
+                        <label for="longitud">Longitud <span class="campo__opcional">(opcional)</span></label>
+                        <input id="longitud" name="ubicacion.longitud" type="number" step="any" min="-180" max="180" data-enviar-vacio>
+                    </div>
+                </div>
+                <button class="boton boton--secundario" type="button" id="usar-ubicacion">{{ icono("brujula") }} Usar mi ubicación actual</button>
+            </div>
+        </div>
+
+        <div class="acciones-formulario">
+            <button class="boton boton--lg" type="submit">{{ icono("check") }} {{ "Guardar cambios" if editando else "Registrar empresa" }}</button>
+        </div>
+    </form>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/empresa.js') }}"></script>
+{% endblock %}

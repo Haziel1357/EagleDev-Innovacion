@@ -1,0 +1,49 @@
+{% extends "layout/base.html" %}
+
+{% block titulo %}Crear cuenta · REVALORA{% endblock %}
+{% block pagina %}registro{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/usuario.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="acceso">
+    <div class="acceso__panel">
+        <h1>Crea tu cuenta</h1>
+        <p class="texto-secundario">Después registrarás los datos de tu empresa o emprendimiento.</p>
+
+        <form class="formulario" id="formulario-registro" novalidate>
+            <div class="alerta alerta--error formulario__error" hidden></div>
+
+            <div class="campo">
+                <label for="nombre">Nombre completo</label>
+                <input id="nombre" name="nombre" autocomplete="name" required minlength="2" maxlength="120" autofocus>
+            </div>
+            <div class="campo">
+                <label for="email">Correo electrónico</label>
+                <input id="email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="campo">
+                <label for="telefono">Teléfono <span class="campo__opcional">(opcional)</span></label>
+                <input id="telefono" name="telefono" type="tel" autocomplete="tel" maxlength="30">
+            </div>
+            <div class="campo">
+                <label for="password">Contraseña</label>
+                <input id="password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="128">
+                <p class="campo__ayuda">Mínimo 8 caracteres.</p>
+            </div>
+
+            <button class="boton boton--lg boton--bloque" type="submit">Crear cuenta</button>
+        </form>
+
+        <p class="acceso__cambio">¿Ya tienes cuenta? <a href="{{ url_for('pagina_ingresar') }}">Ingresa</a></p>
+    </div>
+
+    {% include "usuario/_lateral.html" %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/usuario.js') }}"></script>
+{% endblock %}

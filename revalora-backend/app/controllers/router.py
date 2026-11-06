@@ -15,9 +15,11 @@ from app.controllers.necesidad import necesidad_material_controller
 from app.controllers.oportunidad import oportunidad_productiva_controller
 from app.controllers.transaccion import historial_operacion_controller, solicitud_controller
 from app.controllers.usuario import auth_controller, usuario_controller
+from app.controllers.vistas import paginas_controller
 
 _CONTROLADORES = (
     home_controller,
+    paginas_controller,
     auth_controller,
     usuario_controller,
     empresa_controller,

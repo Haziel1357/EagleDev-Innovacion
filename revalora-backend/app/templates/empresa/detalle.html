@@ -1,0 +1,24 @@
+{% extends "layout/base.html" %}
+
+{% block titulo %}Empresa · REVALORA{% endblock %}
+{% block pagina %}empresa-detalle{% endblock %}
+{% block datos_pagina %}data-empresa-id="{{ empresa_id }}"{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/empresa.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor contenedor--estrecho pagina">
+    <nav class="migas" aria-label="Ruta">
+        <a href="{{ url_for('inicio') }}">Inicio</a><span aria-hidden="true">/</span>
+        <a href="{{ url_for('pagina_materiales') }}">Materiales</a><span aria-hidden="true">/</span>
+        <span>Empresa</span>
+    </nav>
+    <div id="empresa"><div class="cargando">Cargando empresa…</div></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/empresa.js') }}"></script>
+{% endblock %}

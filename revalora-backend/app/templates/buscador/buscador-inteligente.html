@@ -1,0 +1,65 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% block titulo %}Buscador inteligente · REVALORA{% endblock %}
+{% block pagina %}buscador{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/buscador.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="buscador-cabecera">
+    <div class="contenedor">
+        <span class="etiqueta etiqueta--verde">{{ icono("chispas") }} Buscador con IA</span>
+        <h1>¿Qué quieres fabricar?</h1>
+        <p>Descríbelo con tus palabras. La IA deduce qué materiales necesitas y te mostramos los sobrantes disponibles que mejor se ajustan.</p>
+
+        <form class="buscador-ia" id="formulario-buscador" novalidate>
+            <div class="alerta alerta--error formulario__error" hidden></div>
+            <div class="campo">
+                <label class="solo-lectores" for="descripcion">Describe el producto</label>
+                <textarea id="descripcion" name="descripcion" required minlength="5" maxlength="500" rows="2"
+                          placeholder="Ej.: Quiero fabricar marcos para cuadros de 30 × 40 cm"></textarea>
+            </div>
+            <div class="buscador-ia__pie">
+                <div class="chips" id="ejemplos" aria-label="Ejemplos">
+                    <button type="button" class="chip">Marcos para cuadros</button>
+                    <button type="button" class="chip">Bolsos de tela reciclada</button>
+                    <button type="button" class="chip">Cajas organizadoras</button>
+                    <button type="button" class="chip">Macetas para jardín</button>
+                </div>
+                <button class="boton boton--lg" type="submit">{{ icono("chispas") }} Buscar materiales</button>
+            </div>
+            {% if not usuario.empresa %}
+            <input type="hidden" name="latitud"><input type="hidden" name="longitud">
+            <p class="campo__ayuda">
+                Sin empresa registrada no conocemos tu ubicación.
+                <button type="button" class="boton boton--fantasma boton--sm" id="usar-ubicacion">{{ icono("brujula") }} Usar mi ubicación</button>
+            </p>
+            {% endif %}
+        </form>
+    </div>
+</section>
+
+<section class="contenedor pagina buscador-cuerpo">
+    <div id="resultados-buscador">
+        <div class="buscador-intro">
+            <div><span>1</span><p>Escribe lo que quieres fabricar.</p></div>
+            <div><span>2</span><p>La IA identifica los materiales y su función en el producto.</p></div>
+            <div><span>3</span><p>Ordenamos los sobrantes por estado, cercanía, cantidad y precio.</p></div>
+        </div>
+    </div>
+
+    <aside class="buscador-historial">
+        <h2>Búsquedas anteriores</h2>
+        <div id="historial-buscador"><div class="cargando">Cargando…</div></div>
+    </aside>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/material.js') }}"></script>
+<script src="{{ url_for('static', path='js/modulos/buscador.js') }}"></script>
+{% endblock %}
