@@ -1,7 +1,8 @@
 """Manejadores globales de errores.
 
-Responden con una página HTML (templates/error/) cuando la petición viene del
-navegador y con JSON (ErrorResponse) en el resto de casos.
+Las rutas de la API (/api/v1/...) responden siempre con JSON (ErrorResponse).
+Las vistas responden con una página HTML (templates/error/) cuando la petición
+viene del navegador, y con JSON en el resto de casos.
 """
 
 import logging
@@ -13,6 +14,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse, Response
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
+from app.core.config import PREFIJO_API
 from app.core.web import templates
 from app.exceptions.errores import RevaloraError
 from app.schemas.comun_schema import ErrorResponse
@@ -22,10 +24,20 @@ logger = logging.getLogger(__name__)
 _PAGINAS_ERROR = {404, 500}
 
 
+def _es_ruta_api(request: Request) -> bool:
+    """Las rutas de la API responden siempre JSON, aunque las pida un navegador."""
+    ruta = request.url.path
+    return ruta == PREFIJO_API or ruta.startswith(PREFIJO_API + "/")
+
+
 def _responder(
     request: Request, estado: int, mensaje: str, detalles: list[dict] | None = None
 ) -> Response:
-    if estado in _PAGINAS_ERROR and "text/html" in request.headers.get("accept", ""):
+    if (
+        estado in _PAGINAS_ERROR
+        and not _es_ruta_api(request)
+        and "text/html" in request.headers.get("accept", "")
+    ):
         return templates.TemplateResponse(
             request, f"error/{estado}.html", {"mensaje": mensaje}, status_code=estado
         )

@@ -9,6 +9,7 @@ from typing import Annotated
 from fastapi import Depends, Request
 from fastapi.security import OAuth2PasswordBearer
 
+from app.core.config import PREFIJO_API
 from app.core.database import DbSession
 from app.exceptions import AccesoDenegadoError, NoAutenticadoError, ReglaNegocioError
 from app.models import Empresa, Usuario
@@ -16,7 +17,7 @@ from app.security.tokens import leer_usuario_id
 
 COOKIE_TOKEN = "access_token"
 
-_oauth2 = OAuth2PasswordBearer(tokenUrl="/auth/token", auto_error=False)
+_oauth2 = OAuth2PasswordBearer(tokenUrl=f"{PREFIJO_API}/auth/token", auto_error=False)
 
 
 def _token_de_peticion(

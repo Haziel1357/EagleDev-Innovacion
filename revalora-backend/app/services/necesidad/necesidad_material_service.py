@@ -70,6 +70,8 @@ class NecesidadMaterialService:
             setattr(necesidad, campo, valor)
         self.motor.sincronizar_necesidad(necesidad, OrigenCoincidencia.PUBLICACION_NECESIDAD)
         self.db.commit()
+        # Recarga las relaciones: si cambió categoria_id, `categoria` seguía apuntando a la anterior.
+        self.db.refresh(necesidad)
         return necesidad
 
     def cambiar_estado(

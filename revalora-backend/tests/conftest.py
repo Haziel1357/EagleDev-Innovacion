@@ -139,7 +139,8 @@ def registrar(client: TestClient) -> Callable[..., dict[str, str]]:
 
     def _registrar(email: str = "ana@taller.co", nombre: str = "Ana") -> dict[str, str]:
         respuesta = client.post(
-            "/auth/registro", json={"nombre": nombre, "email": email, "password": "clave-segura-1"}
+            "/api/v1/auth/registro",
+            json={"nombre": nombre, "email": email, "password": "clave-segura-1"},
         )
         assert respuesta.status_code == 201, respuesta.text
         client.cookies.clear()
@@ -163,7 +164,7 @@ def crear_empresa(
     ) -> dict[str, str]:
         cabeceras = registrar(email=email, nombre=nombre)
         respuesta = client.post(
-            "/empresas",
+            "/api/v1/empresas",
             headers=cabeceras,
             json={
                 "nombre": nombre,
@@ -179,7 +180,7 @@ def crear_empresa(
 
 @pytest.fixture
 def categoria_id(client: TestClient) -> Callable[[str], int]:
-    categorias = {c["codigo"]: c["id"] for c in client.get("/categorias").json()}
+    categorias = {c["codigo"]: c["id"] for c in client.get("/api/v1/categorias").json()}
     return lambda codigo: categorias[codigo]
 
 
@@ -198,7 +199,7 @@ def publicar_material(
             "precio": "1500",
         }
         cuerpo.update(datos)
-        respuesta = client.post("/materiales", headers=cabeceras, json=cuerpo)
+        respuesta = client.post("/api/v1/materiales", headers=cabeceras, json=cuerpo)
         assert respuesta.status_code == 201, respuesta.text
         return respuesta.json()
 
@@ -219,7 +220,7 @@ def publicar_necesidad(
             "presupuesto_maximo": "50000",
         }
         cuerpo.update(datos)
-        respuesta = client.post("/necesidades", headers=cabeceras, json=cuerpo)
+        respuesta = client.post("/api/v1/necesidades", headers=cabeceras, json=cuerpo)
         assert respuesta.status_code == 201, respuesta.text
         return respuesta.json()
 

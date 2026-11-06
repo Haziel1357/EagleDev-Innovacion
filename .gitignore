@@ -15,6 +15,10 @@ venv/
 revalora-backend/uploads/*
 !revalora-backend/uploads/.gitkeep
 
+# Modelos de IA descargados o entrenados (pesan cientos de MB)
+revalora-ia-service/modelos_entrenados/*
+!revalora-ia-service/modelos_entrenados/.gitkeep
+
 # Editores y sistema operativo
 .idea/
 .vscode/

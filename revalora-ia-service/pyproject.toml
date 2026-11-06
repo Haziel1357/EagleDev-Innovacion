@@ -1,0 +1,56 @@
+[project]
+name = "revalora-ia-service"
+version = "0.1.0"
+description = "Servicio de IA de REVALORA: reconocimiento de materiales, recomendación de materiales y oportunidades productivas."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    # Framework web y servidor
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "python-multipart>=0.0.17",
+    # Configuración y validación
+    "pydantic>=2.9",
+    "pydantic-settings>=2.6",
+    # Imágenes
+    "pillow>=11.0",
+    "numpy>=2.0",
+    # Modelo de visión (CLIP)
+    "torch>=2.5",
+    "transformers>=4.46",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.16",
+    "pytest>=8.3",
+    "ruff>=0.8",
+]
+
+[tool.uv]
+# Es una aplicación, no una librería: uv no la instala como paquete.
+package = false
+
+# PyTorch solo-CPU: el servicio no necesita GPU y así no se descargan ~2 GB de CUDA.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
+markers = [
+    "modelo: pruebas que cargan el modelo CLIP real (lentas; se omiten si no está descargado)",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+ignore = ["E501"]

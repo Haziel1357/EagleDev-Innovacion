@@ -38,6 +38,11 @@ ya validó tipo y tamaño).
 | `material` | string | sí | Material con mayor confianza. |
 | `confianza` | número 0-1 | sí | Por debajo de 0.6 el backend marca `confianza_baja`. |
 | `predicciones` | lista | no | Alternativas ordenables por confianza. |
+| `modelo` | string | no | Clasificador que respondió (`clip` o `heuristico`). El backend lo ignora; sirve para depurar. |
+
+**Errores:** `400` si el archivo está vacío, dañado o no es JPG/PNG/WEBP; `413` si supera
+`TAMANO_MAXIMO_IMAGEN_MB`; `422` si falta el campo `imagen`; `503` si el modelo no está
+disponible (solo con `MODELO_VISION=clip`). El backend convierte cualquiera de ellos en 502.
 
 ## `POST /api/v1/recomendacion`
 
@@ -107,3 +112,21 @@ Sugiere productos que se pueden fabricar con los materiales disponibles.
 ## `GET /api/v1/salud`
 
 Verificación de que el servicio está activo. El backend no la usa todavía.
+
+```json
+{ "estado": "ok", "modelo_vision": "clip" }
+```
+
+`modelo_vision`: `clip`, `heuristico` (respaldo poco preciso) o `sin_cargar` (con
+`CARGAR_MODELO_AL_INICIAR=false`, hasta la primera foto).
+
+## Formato de los errores
+
+Igual que el backend: `{"estado", "error", "mensaje", "ruta", "detalles"?}`. Las peticiones
+con datos inválidos responden `422` con `detalles` (campo y mensaje).
+
+## Implementación
+
+La implementación de referencia es `revalora-ia-service` (ver su README). Si cambias este
+contrato, actualiza a la vez `revalora-ia-service/app/schemas/` y
+`revalora-backend/app/schemas/ia_schema.py`.

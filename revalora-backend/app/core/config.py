@@ -12,6 +12,9 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 
 _SECRET_KEY_DESARROLLO = "solo-para-desarrollo-cambiar-en-produccion"
 
+# Prefijo de todas las rutas de la API REST (JSON). Las vistas HTML van sin prefijo.
+PREFIJO_API = "/api/v1"
+
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(

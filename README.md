@@ -56,7 +56,7 @@ Los usuarios pueden publicar sus sobrantes tomando una fotografía. Un módulo d
 | 👤 **Usuarios y empresas** | Registro, inicio de sesión, perfiles, datos de la empresa, ubicación y actividad económica. |
 | 📦 **Materiales sobrantes** | Publicación de materiales con fotos, cantidad, unidad de medida, dimensiones, estado, ubicación y precio. Pueden ofrecerse para venta, intercambio o aprovechamiento. |
 | 📋 **Necesidades de materiales** | Las empresas publican lo que necesitan: tipo de material, cantidad, estado mínimo aceptable y presupuesto. |
-| 🤖 **Reconocimiento con IA** | Clasifica el material de la foto (madera, cartón, plástico, tela, metal) y devuelve un nivel de confianza. El usuario puede confirmar o corregir el resultado. |
+| 🤖 **Reconocimiento con IA** | Clasifica el material de la foto (madera, cartón, plástico, tela, metal, vidrio, papel u otro) y devuelve un nivel de confianza. El usuario puede confirmar o corregir el resultado. |
 | 🔎 **Buscador inteligente** | El usuario escribe lo que quiere fabricar; la IA deduce los materiales necesarios y el sistema prioriza los sobrantes que mejor se ajustan. |
 | 🔗 **Motor de coincidencias** | Cruza ofertas y necesidades y calcula una puntuación de compatibilidad según material, dimensiones, cantidad, estado, ubicación y precio. |
 | 🤝 **Intercambios y transacciones** | Solicitudes de compra o intercambio, aceptación o rechazo, estados e historial de operaciones. |
@@ -104,13 +104,13 @@ El sistema se compone de dos aplicaciones Python independientes que se comunican
 
 - **Model:** modelos SQLAlchemy organizados por módulo funcional (`app/models`).
 - **View:** plantillas Jinja2, CSS y JavaScript organizadas por módulo (`app/templates`, `app/static`).
-- **Controller:** routers de FastAPI que reciben las peticiones y delegan en la capa de servicios (`app/controllers`).
+- **Controller:** routers de FastAPI que reciben las peticiones y delegan en la capa de servicios (`app/controllers`). Se dividen en `controllers/api/` (API REST en JSON, bajo `/api/v1`) y `controllers/web/` (páginas HTML que renderizan las vistas).
 - Capas de apoyo: `services` (lógica de negocio), `repositories` (acceso a datos), `schemas` (esquemas Pydantic de entrada y salida), `core` (configuración y base de datos), `security`, `exceptions` y `utils`.
 
 **Servicio de IA**
 
-- `ml/vision`: reconocimiento y clasificación de materiales a partir de imágenes.
-- `ml/recomendacion`: análisis del producto a fabricar y recomendación de materiales.
+- `ml/vision`: reconocimiento del material de una foto con el modelo CLIP (*zero-shot*, sin entrenamiento propio), con un clasificador por color y textura como respaldo.
+- `ml/recomendacion`: catálogo de productos (`catalogo_productos.json`) y análisis del texto en español para recomendar materiales y sugerir oportunidades productivas.
 - El backend se comunica con este servicio únicamente a través de `app/services/ia/ia_service_client.py`, de modo que el modelo puede cambiar sin afectar a la aplicación principal.
 
 ---
@@ -131,12 +131,13 @@ El sistema se compone de dos aplicaciones Python independientes que se comunican
 
 - Python
 - FastAPI
-- Modelo de visión artificial *(por definir)*
-- Módulo de recomendaciones inteligentes *(por definir)*
+- PyTorch (solo CPU) + Hugging Face Transformers: modelo de visión CLIP (`openai/clip-vit-base-patch32`)
+- Pillow y NumPy (procesamiento de imágenes)
+- Motor de recomendaciones basado en un catálogo de productos
 
 **Herramientas**
 
-- [uv](https://docs.astral.sh/uv/) (versión de Python, entorno virtual y dependencias del backend)
+- [uv](https://docs.astral.sh/uv/) (versión de Python, entorno virtual y dependencias de las dos aplicaciones)
 - pytest (pruebas)
 - Ruff (formato y análisis de código)
 
@@ -156,9 +157,13 @@ REVALORA/
 │   ├── app/
 │   │   ├── main.py
 │   │   ├── core/                (config, base de datos, logging, web)
-│   │   ├── controllers/         (usuario, empresa, material, necesidad, ia,
-│   │   ├── models/               buscador, coincidencia, transaccion,
-│   │   ├── repositories/         oportunidad)
+│   │   ├── controllers/
+│   │   │   ├── api/             (JSON bajo /api/v1: usuario, empresa, material,
+│   │   │   │                     necesidad, ia, buscador, coincidencia,
+│   │   │   │                     transaccion, oportunidad)
+│   │   │   └── web/             (páginas HTML con Jinja2)
+│   │   ├── models/
+│   │   ├── repositories/
 │   │   ├── services/
 │   │   ├── schemas/
 │   │   ├── exceptions/
@@ -199,7 +204,7 @@ El árbol completo está en [`ESTRUCTURA.txt`](ESTRUCTURA.txt). El archivo `uv.l
 
 ## 🚀 Instalación y ejecución
 
-> ⚠️ El backend ya es funcional; el servicio de IA sigue en fase de estructura. Sin él, las rutas de reconocimiento, buscador inteligente y oportunidades responden 502.
+> El backend y el servicio de IA son funcionales. Si el servicio de IA no está levantado, las rutas de reconocimiento, buscador inteligente y oportunidades del backend responden 502; el resto funciona igual.
 
 **0. Instalar uv** (solo una vez)
 
@@ -236,18 +241,18 @@ uv run alembic upgrade head     # crea las tablas y los datos iniciales
 uv run uvicorn app.main:app --reload --port 8080
 ```
 
-La aplicación queda en http://localhost:8080 y la documentación de la API en http://localhost:8080/docs. Las pruebas se ejecutan con `uv run pytest`. Más detalles en [`revalora-backend/README.md`](revalora-backend/README.md).
+La aplicación queda en http://localhost:8080, la API REST en http://localhost:8080/api/v1 y su documentación en http://localhost:8080/docs. Las pruebas se ejecutan con `uv run pytest`. Más detalles en [`revalora-backend/README.md`](revalora-backend/README.md).
 
 **4. Servicio de IA (FastAPI)**
 
 ```bash
 cd revalora-ia-service
-python -m venv venv
-source venv/bin/activate        # En Windows: venv\Scripts\activate
-pip install -r requirements.txt
-cp .env.example .env
-uvicorn app.main:app --reload
+uv sync                                          # dependencias (~800 MB, PyTorch solo-CPU)
+uv run python -m app.ml.vision.descargar_modelo  # modelo CLIP (~600 MB, una sola vez)
+uv run uvicorn app.main:app --reload --port 8000
 ```
+
+Documentación en http://localhost:8000/docs y salud en http://localhost:8000/api/v1/salud. El backend lo busca en `IA_SERVICE_URL` (por defecto `http://localhost:8000`). Pasa siempre `--port` a los dos servicios: `uvicorn` sin `--port` usa el 8000 y el backend ocuparía el puerto de la IA. Más detalles y cómo probarlo en [`revalora-ia-service/README.md`](revalora-ia-service/README.md).
 
 ---
 
@@ -260,6 +265,7 @@ uvicorn app.main:app --reload
 - [x] Migración del backend de Java (Spring Boot) a Python (FastAPI)
 - [x] Gestión de dependencias del backend con uv (`pyproject.toml` + `uv.lock`)
 - [x] API REST del backend para todos los módulos, con migraciones y pruebas
+- [x] Servicio de IA: reconocimiento de materiales (CLIP), recomendación de materiales y oportunidades productivas, con pruebas
 - [ ] Modelo de datos y diagrama entidad-relación
 - [ ] Gestión de usuarios y empresas
 - [ ] Publicación de materiales y necesidades

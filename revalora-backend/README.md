@@ -24,9 +24,10 @@ uv run alembic upgrade head      # crea las tablas y los datos iniciales
 uv run uvicorn app.main:app --reload --port 8080
 ```
 
-- Aplicación: http://localhost:8080
+- Aplicación (páginas HTML): http://localhost:8080
+- API REST (JSON): http://localhost:8080/api/v1
 - Documentación de la API (Swagger): http://localhost:8080/docs — usa el botón **Authorize** con tu correo y contraseña.
-- Salud: http://localhost:8080/salud
+- Salud: http://localhost:8080/api/v1/salud
 
 El servicio de IA (`revalora-ia-service`) corre por separado en el puerto 8000 (`IA_SERVICE_URL`). Si no está levantado, las rutas que lo usan (`/ia/reconocimiento`, `/buscador/inteligente`, `/oportunidades/analizar`) responden **502**; el resto de la aplicación funciona igual.
 
@@ -73,6 +74,8 @@ UPDATE usuarios SET rol_id = (SELECT id FROM roles WHERE nombre = 'ADMIN') WHERE
 
 ## API
 
+Todas las rutas de la API llevan el prefijo **`/api/v1`** (definido en `PREFIJO_API`, `app/core/config.py`); en la tabla se omite por brevedad. Así `/materiales` queda libre para la página HTML y `/api/v1/materiales` es el JSON. Bajo `/api/v1` los errores responden siempre en JSON, aunque la petición venga del navegador.
+
 Autenticación con JWT: `Authorization: Bearer <token>` (o la cookie `access_token` que dejan `/auth/registro` y `/auth/login`). Casi todo lo que publica o solicita requiere que la cuenta tenga una empresa registrada (`POST /empresas`).
 
 | Módulo | Rutas principales |
@@ -110,7 +113,9 @@ revalora-backend/
 ├── app/
 │   ├── main.py            Punto de entrada (crea la app FastAPI)
 │   ├── core/              Configuración, base de datos, logging, plantillas y estáticos
-│   ├── controllers/       Routers de FastAPI por módulo (router.py los reúne)
+│   ├── controllers/       Routers de FastAPI (router.py los reúne)
+│   │   ├── api/           API REST en JSON bajo /api/v1, una carpeta por módulo
+│   │   └── web/           Páginas HTML que renderizan las plantillas
 │   ├── models/            Modelos SQLAlchemy por módulo (enums.py por módulo)
 │   ├── repositories/      Acceso a datos (base_repository.py con lo común)
 │   ├── services/          Lógica de negocio (incluye el cliente del servicio de IA)
@@ -121,7 +126,10 @@ revalora-backend/
 │   ├── templates/         Vistas Jinja2 por módulo
 │   └── static/            css, js, img
 ├── alembic/               Migraciones de base de datos
-├── tests/                 Pruebas (pytest)
+├── tests/                 Pruebas (pytest), con la misma organización que app/:
+│   ├── controllers/api/   Pruebas de la API por HTTP (TestClient)
+│   ├── services/          Pruebas unitarias de lógica de negocio
+│   └── repositories/      Pruebas de consultas a la base de datos
 └── uploads/               Fotos subidas (no se versiona)
 ```
 
@@ -137,7 +145,8 @@ Módulos: `usuario`, `empresa`, `material`, `necesidad`, `ia`, `buscador`, `coin
 | `config/JpaConfig` | `app/core/database.py` |
 | `config/WebMvcConfig`, `config/FileStorageConfig` | `app/core/web.py` |
 | `config/IaServiceClientConfig` | `IA_SERVICE_URL` / `IA_SERVICE_TIMEOUT` en `app/core/config.py` |
-| `controller/<modulo>/XController` | `app/controllers/<modulo>/x_controller.py` |
+| `controller/<modulo>/XController` (`@RestController`) | `app/controllers/api/<modulo>/x_controller.py` |
+| `controller/<modulo>/XController` (`@Controller`, vistas) | `app/controllers/web/<modulo>/x_controller.py` |
 | `model/<modulo>/` (entidades JPA) | `app/models/<modulo>/` (SQLAlchemy) |
 | `repository/` (Spring Data) | `app/repositories/` |
 | `service/` + `service/impl/` | `app/services/` (sin separar interfaz e implementación) |
