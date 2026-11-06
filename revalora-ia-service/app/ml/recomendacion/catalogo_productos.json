@@ -1,0 +1,247 @@
+{
+  "_instrucciones": "Catálogo de productos que se pueden fabricar con materiales sobrantes. Cada producto: nombre, descripcion, palabras_clave (en singular; tildes y mayúsculas dan igual) y materiales. En materiales: material (código: madera, carton, plastico, tela, metal, vidrio, papel, otro), funcion, principal (true si sin él no se puede fabricar), y opcionalmente cantidad_estimada y unidad (UNIDAD, KILOGRAMO, METRO, METRO_CUADRADO, METRO_CUBICO, LITRO) por cada unidad de producto. Al guardar, ejecuta `uv run pytest tests/test_catalogo.py`.",
+  "productos": [
+    {
+      "nombre": "Marco para cuadros",
+      "descripcion": "Marcos rústicos hechos con retazos de madera, con vidrio frontal y respaldo de cartón.",
+      "palabras_clave": ["marco", "portarretrato", "cuadro", "marco de foto"],
+      "materiales": [
+        {"material": "madera", "funcion": "estructura del marco", "principal": true, "cantidad_estimada": 2, "unidad": "METRO"},
+        {"material": "vidrio", "funcion": "protección frontal", "principal": false, "cantidad_estimada": 0.1, "unidad": "METRO_CUADRADO"},
+        {"material": "carton", "funcion": "respaldo", "principal": false, "cantidad_estimada": 0.1, "unidad": "METRO_CUADRADO"}
+      ]
+    },
+    {
+      "nombre": "Repisa o estantería",
+      "descripcion": "Repisas de pared o estanterías armadas con tablas recuperadas y soportes metálicos.",
+      "palabras_clave": ["repisa", "estante", "estanteria", "librero", "biblioteca", "anaquel", "organizador de pared"],
+      "materiales": [
+        {"material": "madera", "funcion": "tablas y laterales", "principal": true, "cantidad_estimada": 0.5, "unidad": "METRO_CUADRADO"},
+        {"material": "metal", "funcion": "soportes y tornillería", "principal": false, "cantidad_estimada": 4, "unidad": "UNIDAD"}
+      ]
+    },
+    {
+      "nombre": "Mesa de palets",
+      "descripcion": "Mesas de centro o de exterior hechas con estibas, con patas o ruedas metálicas.",
+      "palabras_clave": ["mesa", "mesa de centro", "mesa de palet", "escritorio"],
+      "materiales": [
+        {"material": "madera", "funcion": "tablero y estructura", "principal": true, "cantidad_estimada": 2, "unidad": "UNIDAD"},
+        {"material": "metal", "funcion": "patas, ruedas o refuerzos", "principal": false, "cantidad_estimada": 4, "unidad": "UNIDAD"},
+        {"material": "vidrio", "funcion": "cubierta superior", "principal": false, "cantidad_estimada": 0.5, "unidad": "METRO_CUADRADO"}
+      ]
+    },
+    {
+      "nombre": "Banco o taburete",
+      "descripcion": "Bancos y taburetes con asiento de madera y cojín tapizado con retazos de tela.",
+      "palabras_clave": ["banco", "taburete", "banca", "silla", "asiento", "butaco"],
+      "materiales": [
+        {"material": "madera", "funcion": "estructura y asiento", "principal": true, "cantidad_estimada": 0.4, "unidad": "METRO_CUADRADO"},
+        {"material": "tela", "funcion": "tapizado del asiento", "principal": false, "cantidad_estimada": 0.3, "unidad": "METRO_CUADRADO"},
+        {"material": "metal", "funcion": "tornillería y refuerzos", "principal": false, "cantidad_estimada": 8, "unidad": "UNIDAD"}
+      ]
+    },
+    {
+      "nombre": "Juguete de madera",
+      "descripcion": "Bloques, carritos y rompecabezas de madera para niños.",
+      "palabras_clave": ["juguete", "bloque", "rompecabeza", "carrito", "didactico", "ficha"],
+      "materiales": [
+        {"material": "madera", "funcion": "piezas del juguete", "principal": true, "cantidad_estimada": 0.5, "unidad": "KILOGRAMO"}
+      ]
+    },
+    {
+      "nombre": "Caja organizadora",
+      "descripcion": "Cajas organizadoras de cartón forradas con tela o papel decorativo.",
+      "palabras_clave": ["caja", "organizador", "caja organizadora", "archivador", "cajon"],
+      "materiales": [
+        {"material": "carton", "funcion": "estructura de la caja", "principal": true, "cantidad_estimada": 0.5, "unidad": "METRO_CUADRADO"},
+        {"material": "tela", "funcion": "forro exterior", "principal": false, "cantidad_estimada": 0.5, "unidad": "METRO_CUADRADO"},
+        {"material": "papel", "funcion": "forro decorativo", "principal": false, "cantidad_estimada": 0.5, "unidad": "METRO_CUADRADO"}
+      ]
+    },
+    {
+      "nombre": "Empaque y relleno para envíos",
+      "descripcion": "Cajas de envío, separadores y relleno protector a partir de cartón y papel.",
+      "palabras_clave": ["empaque", "embalaje", "envio", "relleno", "separador", "caja de envio"],
+      "materiales": [
+        {"material": "carton", "funcion": "cajas y separadores", "principal": true, "cantidad_estimada": 1, "unidad": "KILOGRAMO"},
+        {"material": "papel", "funcion": "relleno protector", "principal": false, "cantidad_estimada": 0.3, "unidad": "KILOGRAMO"}
+      ]
+    },
+    {
+      "nombre": "Cuaderno o libreta artesanal",
+      "descripcion": "Libretas cosidas a mano con hojas recuperadas y tapas de cartón forradas.",
+      "palabras_clave": ["cuaderno", "libreta", "agenda", "bitacora", "libro"],
+      "materiales": [
+        {"material": "papel", "funcion": "hojas interiores", "principal": true, "cantidad_estimada": 0.3, "unidad": "KILOGRAMO"},
+        {"material": "carton", "funcion": "tapas", "principal": true, "cantidad_estimada": 0.1, "unidad": "METRO_CUADRADO"},
+        {"material": "tela", "funcion": "forro de las tapas", "principal": false, "cantidad_estimada": 0.1, "unidad": "METRO_CUADRADO"}
+      ]
+    },
+    {
+      "nombre": "Papel reciclado artesanal",
+      "descripcion": "Hojas de papel artesanal hechas con pulpa de papel y cartón usados.",
+      "palabras_clave": ["papel reciclado", "papel artesanal", "pulpa", "tarjeta", "invitacion"],
+      "materiales": [
+        {"material": "papel", "funcion": "pulpa principal", "principal": true, "cantidad_estimada": 1, "unidad": "KILOGRAMO"},
+        {"material": "carton", "funcion": "fibra adicional", "principal": false, "cantidad_estimada": 0.3, "unidad": "KILOGRAMO"}
+      ]
+    },
+    {
+      "nombre": "Bolsa reutilizable",
+      "descripcion": "Bolsas de compras y tote bags cosidas con retazos de tela o lona.",
+      "palabras_clave": ["bolsa", "tote", "bolso", "morral", "mochila", "cartera"],
+      "materiales": [
+        {"material": "tela", "funcion": "cuerpo y asas", "principal": true, "cantidad_estimada": 1, "unidad": "METRO_CUADRADO"},
+        {"material": "metal", "funcion": "broches o cremallera", "principal": false, "cantidad_estimada": 1, "unidad": "UNIDAD"}
+      ]
+    },
+    {
+      "nombre": "Cojín decorativo",
+      "descripcion": "Cojines con funda de retazos de tela y relleno de recortes textiles.",
+      "palabras_clave": ["cojin", "almohada", "almohadon", "puff"],
+      "materiales": [
+        {"material": "tela", "funcion": "funda y relleno", "principal": true, "cantidad_estimada": 0.8, "unidad": "METRO_CUADRADO"}
+      ]
+    },
+    {
+      "nombre": "Alfombra o tapete de retazos",
+      "descripcion": "Tapetes tejidos o trenzados con tiras de tela sobrante.",
+      "palabras_clave": ["alfombra", "tapete", "tapiz", "felpudo"],
+      "materiales": [
+        {"material": "tela", "funcion": "tiras para tejer", "principal": true, "cantidad_estimada": 2, "unidad": "KILOGRAMO"}
+      ]
+    },
+    {
+      "nombre": "Delantal o prenda de trabajo",
+      "descripcion": "Delantales, mandiles y prendas sencillas confeccionadas con lona o jean recuperado.",
+      "palabras_clave": ["delantal", "mandil", "prenda", "ropa", "camiseta", "uniforme"],
+      "materiales": [
+        {"material": "tela", "funcion": "cuerpo de la prenda", "principal": true, "cantidad_estimada": 1.2, "unidad": "METRO_CUADRADO"},
+        {"material": "metal", "funcion": "hebillas o remaches", "principal": false, "cantidad_estimada": 2, "unidad": "UNIDAD"}
+      ]
+    },
+    {
+      "nombre": "Maceta o jardinera",
+      "descripcion": "Macetas y jardineras verticales hechas con botellas y envases plásticos.",
+      "palabras_clave": ["maceta", "matera", "jardinera", "huerta", "jardin vertical", "materero"],
+      "materiales": [
+        {"material": "plastico", "funcion": "recipiente", "principal": true, "cantidad_estimada": 2, "unidad": "UNIDAD"},
+        {"material": "madera", "funcion": "soporte o estructura vertical", "principal": false, "cantidad_estimada": 1, "unidad": "METRO"},
+        {"material": "metal", "funcion": "alambre para colgar", "principal": false, "cantidad_estimada": 1, "unidad": "METRO"}
+      ]
+    },
+    {
+      "nombre": "Ecoladrillo",
+      "descripcion": "Botellas PET rellenas de plástico compactado para construcción liviana.",
+      "palabras_clave": ["ecoladrillo", "eco ladrillo", "ladrillo", "muro", "construccion"],
+      "materiales": [
+        {"material": "plastico", "funcion": "botella y relleno compactado", "principal": true, "cantidad_estimada": 0.5, "unidad": "KILOGRAMO"}
+      ]
+    },
+    {
+      "nombre": "Comedero para aves",
+      "descripcion": "Comederos colgantes hechos con botellas plásticas o retazos de madera.",
+      "palabras_clave": ["comedero", "bebedero", "pajarera", "casa para pajaro", "ave"],
+      "materiales": [
+        {"material": "plastico", "funcion": "depósito de alimento", "principal": true, "cantidad_estimada": 1, "unidad": "UNIDAD"},
+        {"material": "madera", "funcion": "techo y percha", "principal": false, "cantidad_estimada": 0.5, "unidad": "METRO"},
+        {"material": "metal", "funcion": "alambre para colgar", "principal": false, "cantidad_estimada": 0.5, "unidad": "METRO"}
+      ]
+    },
+    {
+      "nombre": "Escoba de botellas",
+      "descripcion": "Escobas con cerdas cortadas de botellas PET y palo de madera.",
+      "palabras_clave": ["escoba", "cepillo", "trapeador"],
+      "materiales": [
+        {"material": "plastico", "funcion": "cerdas", "principal": true, "cantidad_estimada": 10, "unidad": "UNIDAD"},
+        {"material": "madera", "funcion": "palo", "principal": true, "cantidad_estimada": 1.2, "unidad": "METRO"},
+        {"material": "metal", "funcion": "alambre de sujeción", "principal": false, "cantidad_estimada": 1, "unidad": "METRO"}
+      ]
+    },
+    {
+      "nombre": "Lámpara decorativa",
+      "descripcion": "Lámparas con pantalla de vidrio, frascos o tela y base de madera o metal.",
+      "palabras_clave": ["lampara", "luminaria", "pantalla", "candelabro", "aplique"],
+      "materiales": [
+        {"material": "vidrio", "funcion": "pantalla o difusor", "principal": true, "cantidad_estimada": 1, "unidad": "UNIDAD"},
+        {"material": "metal", "funcion": "estructura y portalámparas", "principal": true, "cantidad_estimada": 0.5, "unidad": "KILOGRAMO"},
+        {"material": "madera", "funcion": "base", "principal": false, "cantidad_estimada": 0.3, "unidad": "KILOGRAMO"},
+        {"material": "tela", "funcion": "pantalla alternativa", "principal": false, "cantidad_estimada": 0.3, "unidad": "METRO_CUADRADO"}
+      ]
+    },
+    {
+      "nombre": "Vela en frasco",
+      "descripcion": "Velas aromáticas vertidas en frascos de vidrio recuperados.",
+      "palabras_clave": ["vela", "veladora", "cirio", "aromatizante"],
+      "materiales": [
+        {"material": "vidrio", "funcion": "recipiente", "principal": true, "cantidad_estimada": 1, "unidad": "UNIDAD"},
+        {"material": "tela", "funcion": "decoración del frasco", "principal": false, "cantidad_estimada": 0.05, "unidad": "METRO_CUADRADO"}
+      ]
+    },
+    {
+      "nombre": "Terrario",
+      "descripcion": "Terrarios y mini jardines dentro de frascos o recipientes de vidrio.",
+      "palabras_clave": ["terrario", "mini jardin", "suculenta", "pecera"],
+      "materiales": [
+        {"material": "vidrio", "funcion": "recipiente", "principal": true, "cantidad_estimada": 1, "unidad": "UNIDAD"},
+        {"material": "madera", "funcion": "base decorativa", "principal": false, "cantidad_estimada": 0.2, "unidad": "KILOGRAMO"}
+      ]
+    },
+    {
+      "nombre": "Vaso o florero de botella",
+      "descripcion": "Vasos, floreros y dispensadores obtenidos cortando y puliendo botellas de vidrio.",
+      "palabras_clave": ["vaso", "florero", "jarron", "dispensador", "copa"],
+      "materiales": [
+        {"material": "vidrio", "funcion": "cuerpo del recipiente", "principal": true, "cantidad_estimada": 1, "unidad": "UNIDAD"}
+      ]
+    },
+    {
+      "nombre": "Portalápices",
+      "descripcion": "Portalápices y organizadores de escritorio con latas forradas en tela o papel.",
+      "palabras_clave": ["portalapiz", "porta lapiz", "lapicero", "organizador de escritorio", "portaesfero"],
+      "materiales": [
+        {"material": "metal", "funcion": "recipiente (lata)", "principal": true, "cantidad_estimada": 1, "unidad": "UNIDAD"},
+        {"material": "tela", "funcion": "forro", "principal": false, "cantidad_estimada": 0.05, "unidad": "METRO_CUADRADO"},
+        {"material": "papel", "funcion": "forro alternativo", "principal": false, "cantidad_estimada": 0.05, "unidad": "METRO_CUADRADO"}
+      ]
+    },
+    {
+      "nombre": "Perchero o colgador",
+      "descripcion": "Percheros de pared con tabla de madera y ganchos de metal reciclado.",
+      "palabras_clave": ["perchero", "colgador", "gancho", "llavero de pared", "porta llave"],
+      "materiales": [
+        {"material": "madera", "funcion": "tabla base", "principal": true, "cantidad_estimada": 0.6, "unidad": "METRO"},
+        {"material": "metal", "funcion": "ganchos", "principal": true, "cantidad_estimada": 4, "unidad": "UNIDAD"}
+      ]
+    },
+    {
+      "nombre": "Bisutería y accesorios",
+      "descripcion": "Aretes, collares y llaveros con piezas de metal, vidrio pulido o tela.",
+      "palabras_clave": ["bisuteria", "arete", "collar", "pulsera", "llavero", "joya", "accesorio"],
+      "materiales": [
+        {"material": "metal", "funcion": "alambre, argollas y piezas", "principal": true, "cantidad_estimada": 0.05, "unidad": "KILOGRAMO"},
+        {"material": "vidrio", "funcion": "cuentas o dijes", "principal": false, "cantidad_estimada": 5, "unidad": "UNIDAD"},
+        {"material": "tela", "funcion": "cordones o detalles", "principal": false, "cantidad_estimada": 0.5, "unidad": "METRO"}
+      ]
+    },
+    {
+      "nombre": "Escultura o arte con chatarra",
+      "descripcion": "Esculturas y piezas decorativas soldadas con retal metálico.",
+      "palabras_clave": ["escultura", "arte", "figura", "adorno", "decoracion"],
+      "materiales": [
+        {"material": "metal", "funcion": "piezas soldadas", "principal": true, "cantidad_estimada": 3, "unidad": "KILOGRAMO"},
+        {"material": "madera", "funcion": "pedestal", "principal": false, "cantidad_estimada": 0.5, "unidad": "KILOGRAMO"}
+      ]
+    },
+    {
+      "nombre": "Reloj de pared",
+      "descripcion": "Relojes de pared con esfera de madera, vidrio o vinilo y mecanismo recuperado.",
+      "palabras_clave": ["reloj", "reloj de pared"],
+      "materiales": [
+        {"material": "madera", "funcion": "esfera", "principal": true, "cantidad_estimada": 0.1, "unidad": "METRO_CUADRADO"},
+        {"material": "metal", "funcion": "manecillas", "principal": false, "cantidad_estimada": 1, "unidad": "UNIDAD"},
+        {"material": "vidrio", "funcion": "cubierta frontal", "principal": false, "cantidad_estimada": 0.1, "unidad": "METRO_CUADRADO"}
+      ]
+    }
+  ]
+}
