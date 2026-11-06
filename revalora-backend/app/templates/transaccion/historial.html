@@ -1,0 +1,30 @@
+{% extends "layout/base.html" %}
+
+{% block titulo %}Historial de operaciones · REVALORA{% endblock %}
+{% block pagina %}historial{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/transaccion.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor contenedor--estrecho pagina">
+    <nav class="migas" aria-label="Ruta">
+        <a href="{{ url_for('pagina_solicitudes') }}">Solicitudes</a><span aria-hidden="true">/</span>
+        <span>Historial</span>
+    </nav>
+    <div class="pagina__cabecera">
+        <div>
+            <h1>Historial de operaciones</h1>
+            <p>Cada cambio de estado de las solicitudes en las que participa {{ usuario.empresa.nombre }}.</p>
+        </div>
+    </div>
+
+    <div id="historial"><div class="cargando">Cargando historial…</div></div>
+    <nav class="paginacion" id="paginacion" aria-label="Paginación"></nav>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/transaccion.js') }}"></script>
+{% endblock %}

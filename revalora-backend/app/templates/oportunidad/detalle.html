@@ -1,0 +1,23 @@
+{% extends "layout/base.html" %}
+
+{% block titulo %}Oportunidad productiva · REVALORA{% endblock %}
+{% block pagina %}oportunidad-detalle{% endblock %}
+{% block datos_pagina %}data-oportunidad-id="{{ oportunidad_id }}"{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/oportunidad.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <nav class="migas" aria-label="Ruta">
+        <a href="{{ url_for('pagina_oportunidades') }}">Oportunidades</a><span aria-hidden="true">/</span>
+        <span>Análisis #{{ oportunidad_id }}</span>
+    </nav>
+    <div id="oportunidad"><div class="cargando">Cargando análisis…</div></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/oportunidad.js') }}"></script>
+{% endblock %}

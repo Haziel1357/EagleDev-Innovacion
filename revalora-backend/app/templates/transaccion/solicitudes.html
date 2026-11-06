@@ -1,0 +1,45 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% block titulo %}Solicitudes · REVALORA{% endblock %}
+{% block pagina %}solicitudes{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/transaccion.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <div class="pagina__cabecera">
+        <div>
+            <h1>Solicitudes</h1>
+            <p>Compras, intercambios y aprovechamientos de {{ usuario.empresa.nombre }}.</p>
+        </div>
+        <a class="boton boton--secundario" href="{{ url_for('pagina_historial') }}">{{ icono("regla") }} Historial de operaciones</a>
+    </div>
+
+    <div class="barra-solicitudes">
+        <div class="pestanas" role="tablist" id="pestanas-solicitudes">
+            <button class="pestana" role="tab" type="button" data-vista="recibidas" aria-selected="true">Recibidas <span class="contador" data-total="recibidas" hidden></span></button>
+            <button class="pestana" role="tab" type="button" data-vista="enviadas" aria-selected="false">Enviadas</button>
+        </div>
+        <div class="campo">
+            <label class="solo-lectores" for="filtro-estado">Estado</label>
+            <select id="filtro-estado" class="catalogo__orden">
+                <option value="">Todos los estados</option>
+                {% for valor, texto in etiquetas.estado_solicitud.items() %}
+                <option value="{{ valor }}">{{ texto }}s</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+
+    <div id="solicitudes"><div class="cargando">Cargando solicitudes…</div></div>
+    <nav class="paginacion" id="paginacion" aria-label="Paginación"></nav>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/transaccion.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,610 @@
+/* REVALORA · materiales (tarjetas, catálogo, detalle, formulario, mis materiales) */
+
+/* --------------------------------------------------------------- tarjetas */
+
+.rejilla-materiales {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: var(--esp-4);
+}
+
+.material-tarjeta {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-lg);
+    color: inherit;
+    text-decoration: none;
+    transition: transform var(--transicion), box-shadow var(--transicion), border-color var(--transicion);
+}
+
+.material-tarjeta:hover {
+    transform: translateY(-3px);
+    border-color: var(--verde-200);
+    box-shadow: var(--sombra-lg);
+    color: inherit;
+}
+
+.material-tarjeta__imagen {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    background: var(--fondo-categoria, var(--superficie-2));
+    overflow: hidden;
+}
+
+.material-tarjeta__imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.material-tarjeta__emoji {
+    font-size: 3.25rem;
+    filter: drop-shadow(0 4px 8px rgb(0 0 0 / 0.12));
+}
+
+.material-tarjeta__insignias {
+    position: absolute;
+    inset: var(--esp-3) var(--esp-3) auto;
+    display: flex;
+    justify-content: space-between;
+    gap: var(--esp-2);
+}
+
+.material-tarjeta__insignias .etiqueta {
+    box-shadow: var(--sombra-sm);
+}
+
+.material-tarjeta__cuerpo {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+    padding: var(--esp-4);
+}
+
+.material-tarjeta__categoria {
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--verde-700);
+}
+
+.material-tarjeta h3 {
+    margin: 0;
+    font-size: var(--texto-base);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.material-tarjeta__datos {
+    font-size: var(--texto-sm);
+    color: var(--texto-2);
+}
+
+.material-tarjeta__pie {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--esp-2);
+    margin-top: auto;
+    padding-top: var(--esp-3);
+    border-top: 1px solid var(--borde);
+}
+
+.material-tarjeta__precio {
+    font-size: var(--texto-lg);
+    font-weight: 800;
+    color: var(--verde-900);
+    white-space: nowrap;
+}
+
+.precio-unidad {
+    font-size: 0.6em;
+    font-weight: 600;
+    color: var(--texto-3);
+}
+
+.material-tarjeta__empresa {
+    min-width: 0;
+    font-size: var(--texto-xs);
+    color: var(--texto-3);
+    text-align: right;
+}
+
+.material-tarjeta__empresa strong {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--texto-2);
+}
+
+/* Etiquetas según el tipo de oferta */
+.oferta-VENTA { background: var(--superficie); color: var(--verde-800); }
+.oferta-INTERCAMBIO { background: #fff4e8; color: var(--tierra-600); }
+.oferta-APROVECHAMIENTO { background: #e8f3ff; color: var(--info); }
+
+.verificado {
+    background: var(--verde-700);
+    color: #fff;
+}
+
+/* --------------------------------------------------------------- catálogo */
+
+.catalogo {
+    display: grid;
+    grid-template-columns: 270px minmax(0, 1fr);
+    gap: var(--esp-6);
+    align-items: start;
+}
+
+.catalogo__filtros {
+    position: sticky;
+    top: calc(var(--alto-cabecera) + var(--esp-4));
+}
+
+.filtros {
+    display: grid;
+    gap: var(--esp-4);
+    padding: var(--esp-5);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-lg);
+}
+
+.filtros__titulo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    font-size: var(--texto-base);
+}
+
+.filtros__titulo button {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--verde-700);
+    font-size: var(--texto-xs);
+    font-weight: 650;
+    cursor: pointer;
+}
+
+.filtros > details > summary {
+    display: none;
+}
+
+.filtros > details > summary svg {
+    width: 18px;
+    height: 18px;
+}
+
+.catalogo__barra {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--esp-3);
+    margin-bottom: var(--esp-4);
+}
+
+.catalogo__busqueda {
+    position: relative;
+    flex: 1;
+    min-width: 220px;
+}
+
+.catalogo__busqueda svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    transform: translateY(-50%);
+    color: var(--texto-3);
+    pointer-events: none;
+}
+
+.catalogo__busqueda input {
+    padding-left: 38px !important;
+}
+
+.catalogo__orden {
+    width: auto !important;
+}
+
+.catalogo__resumen {
+    margin-bottom: var(--esp-4);
+    font-size: var(--texto-sm);
+    color: var(--texto-3);
+}
+
+.catalogo .chips {
+    margin-bottom: var(--esp-4);
+}
+
+/* ----------------------------------------------------------------- detalle */
+
+.detalle {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(300px, 1fr);
+    gap: var(--esp-6);
+    align-items: start;
+}
+
+.galeria {
+    display: grid;
+    gap: var(--esp-3);
+}
+
+.galeria__principal {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    border-radius: var(--radio-lg);
+    background: var(--fondo-categoria, var(--superficie-2));
+    border: 1px solid var(--borde);
+}
+
+.galeria__principal img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.galeria__principal .material-tarjeta__emoji {
+    font-size: 6rem;
+}
+
+.galeria__miniaturas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-2);
+}
+
+.miniatura {
+    position: relative;
+    width: 84px;
+    height: 84px;
+    padding: 0;
+    overflow: hidden;
+    border: 2px solid transparent;
+    border-radius: var(--radio);
+    background: var(--superficie-2);
+    cursor: pointer;
+}
+
+.miniatura img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.miniatura[aria-current="true"] {
+    border-color: var(--verde-600);
+}
+
+.miniatura__acciones {
+    position: absolute;
+    inset: auto 4px 4px;
+    display: flex;
+    justify-content: space-between;
+    gap: 4px;
+}
+
+.miniatura__accion {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 6px;
+    background: rgb(255 255 255 / 0.92);
+    color: var(--texto);
+    cursor: pointer;
+    box-shadow: var(--sombra-sm);
+}
+
+.miniatura__accion svg {
+    width: 14px;
+    height: 14px;
+}
+
+.miniatura__accion--principal[aria-pressed="true"] {
+    background: var(--tierra-500);
+    color: #fff;
+}
+
+.miniatura--subir {
+    display: grid;
+    place-items: center;
+    border: 2px dashed var(--borde-fuerte);
+    background: var(--superficie);
+    color: var(--texto-3);
+}
+
+.miniatura--subir:hover {
+    border-color: var(--verde-500);
+    color: var(--verde-700);
+}
+
+.miniatura--subir svg {
+    width: 22px;
+    height: 22px;
+}
+
+.detalle__info h1 {
+    font-size: var(--texto-2xl);
+    margin-block: var(--esp-2) var(--esp-3);
+}
+
+.especificaciones {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: var(--esp-3);
+    margin: var(--esp-5) 0;
+    padding: 0;
+}
+
+.especificaciones div {
+    padding: var(--esp-3) var(--esp-4);
+    border-radius: var(--radio);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+}
+
+.especificaciones dt {
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--texto-3);
+}
+
+.especificaciones dd {
+    margin: 2px 0 0;
+    font-weight: 650;
+}
+
+.detalle__descripcion {
+    white-space: pre-line;
+    color: var(--texto-2);
+}
+
+.panel-accion {
+    position: sticky;
+    top: calc(var(--alto-cabecera) + var(--esp-4));
+    display: grid;
+    gap: var(--esp-4);
+}
+
+.panel-accion__precio {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: var(--verde-950);
+    line-height: 1.1;
+}
+
+.panel-accion__precio small {
+    display: block;
+    margin-top: 4px;
+    font-size: var(--texto-sm);
+    font-weight: 500;
+    color: var(--texto-3);
+}
+
+.panel-accion__precio small.precio-unidad {
+    display: inline;
+    font-size: var(--texto-base);
+}
+
+.empresa-mini {
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+    color: inherit;
+    text-decoration: none;
+}
+
+.empresa-mini:hover strong {
+    color: var(--verde-700);
+    text-decoration: underline;
+}
+
+.empresa-mini .avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--tierra-500);
+    font-size: var(--texto-sm);
+}
+
+.empresa-mini div {
+    display: grid;
+    font-size: var(--texto-sm);
+}
+
+.empresa-mini span {
+    color: var(--texto-3);
+    font-size: var(--texto-xs);
+}
+
+.solicitud-enviada {
+    display: grid;
+    justify-items: center;
+    gap: var(--esp-2);
+    padding: var(--esp-4);
+    text-align: center;
+}
+
+.solicitud-enviada__icono {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--verde-100);
+    color: var(--verde-700);
+}
+
+.solicitud-enviada__icono svg {
+    width: 26px;
+    height: 26px;
+}
+
+/* -------------------------------------------------------------- formulario */
+
+.formulario-material {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: var(--esp-6);
+    align-items: start;
+}
+
+.formulario-material__ayuda {
+    position: sticky;
+    top: calc(var(--alto-cabecera) + var(--esp-4));
+}
+
+.formulario-material__ayuda ul {
+    margin: 0;
+    padding-left: 1.1rem;
+    display: grid;
+    gap: var(--esp-2);
+    font-size: var(--texto-sm);
+    color: var(--texto-2);
+}
+
+.vistas-previas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--esp-2);
+}
+
+.vistas-previas img {
+    width: 84px;
+    height: 84px;
+    object-fit: cover;
+    border-radius: var(--radio);
+    border: 1px solid var(--borde);
+}
+
+/* ---------------------------------------------------------- mis materiales */
+
+.miniatura-tabla {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    overflow: hidden;
+    border-radius: var(--radio-sm);
+    background: var(--fondo-categoria, var(--superficie-2));
+    font-size: 1.4rem;
+    flex: none;
+}
+
+.miniatura-tabla img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.celda-material {
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+    min-width: 240px;
+}
+
+.celda-material a {
+    font-weight: 650;
+    color: var(--texto);
+    text-decoration: none;
+}
+
+.celda-material a:hover {
+    color: var(--verde-700);
+    text-decoration: underline;
+}
+
+.celda-material span {
+    display: block;
+    font-size: var(--texto-xs);
+    color: var(--texto-3);
+}
+
+.selector-disponibilidad {
+    min-height: 34px !important;
+    padding: 4px 30px 4px 10px !important;
+    font-size: var(--texto-xs) !important;
+    font-weight: 650;
+    width: auto !important;
+}
+
+.fila-retirada {
+    opacity: 0.55;
+}
+
+.acciones-tabla {
+    display: flex;
+    gap: var(--esp-1);
+    justify-content: flex-end;
+}
+
+/* -------------------------------------------------------------- responsive */
+
+@media (max-width: 960px) {
+    .catalogo,
+    .detalle,
+    .formulario-material {
+        grid-template-columns: 1fr;
+    }
+
+    .catalogo__filtros,
+    .panel-accion,
+    .formulario-material__ayuda {
+        position: static;
+    }
+
+    .formulario-material__ayuda {
+        order: -1;
+    }
+
+    .filtros > details > summary {
+        display: flex;
+        align-items: center;
+        gap: var(--esp-2);
+        font-weight: 700;
+        cursor: pointer;
+        list-style: none;
+    }
+
+    .filtros > details > summary::after {
+        content: "▾";
+        margin-left: auto;
+        color: var(--texto-3);
+    }
+
+    .filtros > details[open] > summary::after {
+        content: "▴";
+    }
+
+    .filtros {
+        padding: var(--esp-4);
+    }
+
+    .filtros > details[open] > summary {
+        margin-bottom: var(--esp-4);
+    }
+}

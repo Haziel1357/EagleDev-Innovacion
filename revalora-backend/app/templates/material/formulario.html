@@ -1,0 +1,168 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% set editando = material_id is not none %}
+{% block titulo %}{{ "Editar material" if editando else "Publicar sobrante" }} · REVALORA{% endblock %}
+{% block pagina %}material-formulario{% endblock %}
+{% block datos_pagina %}{% if editando %}data-material-id="{{ material_id }}"{% endif %}{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/ia.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <nav class="migas" aria-label="Ruta">
+        <a href="{{ url_for('pagina_mis_materiales') }}">Mis materiales</a><span aria-hidden="true">/</span>
+        <span>{{ "Editar" if editando else "Publicar" }}</span>
+    </nav>
+    <div class="pagina__cabecera">
+        <div>
+            <h1>{{ "Editar material" if editando else "Publica un material sobrante" }}</h1>
+            <p>{{ "Actualiza los datos de tu publicación." if editando else "Empieza con una foto: la IA reconoce el material y verifica tu publicación." }}</p>
+        </div>
+    </div>
+
+    <div class="formulario-material">
+        <form class="pila pila--lg" id="formulario-material" novalidate>
+            <div class="alerta alerta--error formulario__error" hidden></div>
+            {% set paso = namespace(n=0) %}
+
+            {% if not editando %}
+            {% set paso.n = paso.n + 1 %}
+            <div class="seccion-formulario">
+                <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">{{ paso.n }}</span> Foto y reconocimiento con IA</h2>
+                <div id="reconocimiento-ia"></div>
+                <input type="hidden" name="clasificacion_id" id="clasificacion_id">
+            </div>
+            {% endif %}
+
+            {% set paso.n = paso.n + 1 %}
+            <div class="seccion-formulario">
+                <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">{{ paso.n }}</span> ¿Qué material es?</h2>
+                <div class="campo">
+                    <label for="titulo">Título de la publicación</label>
+                    <input id="titulo" name="titulo" required minlength="3" maxlength="150" placeholder="Ej.: Retazos de madera de pino">
+                </div>
+                <div class="campo">
+                    <label for="categoria_id">Categoría</label>
+                    <select id="categoria_id" name="categoria_id" required>
+                        <option value="">Selecciona una categoría</option>
+                    </select>
+                    <p class="campo__ayuda" id="ayuda-categoria"></p>
+                </div>
+                <div class="campo">
+                    <label for="descripcion">Descripción <span class="campo__opcional">(opcional)</span></label>
+                    <textarea id="descripcion" name="descripcion" maxlength="2000" data-enviar-vacio
+                              placeholder="Origen del material, tipo de madera, colores, si tiene clavos o pintura…"></textarea>
+                </div>
+            </div>
+
+            {% set paso.n = paso.n + 1 %}
+            <div class="seccion-formulario">
+                <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">{{ paso.n }}</span> Cantidad y estado</h2>
+                <div class="rejilla-campos rejilla-campos--2">
+                    <div class="campo">
+                        <label for="cantidad">Cantidad disponible</label>
+                        <input id="cantidad" name="cantidad" type="number" min="0.001" step="any" required>
+                    </div>
+                    <div class="campo">
+                        <label for="unidad_medida">Unidad de medida</label>
+                        <select id="unidad_medida" name="unidad_medida" required>
+                            {% for valor, texto in etiquetas.unidad_medida.items() %}
+                            <option value="{{ valor }}">{{ texto }} ({{ etiquetas.unidad_corta[valor] }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <span class="campo__etiqueta" id="etiqueta-estado">Estado del material</span>
+                    <div class="opciones opciones--pastillas" role="radiogroup" aria-labelledby="etiqueta-estado">
+                        {% for valor, texto in etiquetas.estado_material.items() %}
+                        <label class="opcion"><input type="radio" name="estado" value="{{ valor }}" required {% if valor == "BUENO" %}checked{% endif %}><strong>{{ texto }}</strong></label>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <span class="campo__etiqueta">Dimensiones aproximadas <span class="campo__opcional">(opcional, en cm)</span></span>
+                    <div class="rejilla-campos rejilla-campos--3">
+                        {% for clave, texto in [("largo_cm", "Largo"), ("ancho_cm", "Ancho"), ("alto_cm", "Alto")] %}
+                        <div class="campo">
+                            <label class="solo-lectores" for="{{ clave }}">{{ texto }}</label>
+                            <div class="campo__con-sufijo">
+                                <input id="{{ clave }}" name="dimensiones.{{ clave }}" type="number" min="0.01" step="any" placeholder="{{ texto }}">
+                                <span class="campo__sufijo">cm</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            {% set paso.n = paso.n + 1 %}
+            <div class="seccion-formulario">
+                <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">{{ paso.n }}</span> ¿Cómo lo ofreces?</h2>
+                {% set descripciones = {
+                    "VENTA": "Recibe un pago por el material.",
+                    "INTERCAMBIO": "Cámbialo por otro material que necesites.",
+                    "APROVECHAMIENTO": "Entrégalo sin costo para que no se desperdicie.",
+                } %}
+                <div class="opciones" role="radiogroup" aria-label="Tipo de oferta">
+                    {% for valor, texto in etiquetas.tipo_oferta.items() %}
+                    <label class="opcion">
+                        <input type="radio" name="tipo_oferta" value="{{ valor }}" required {% if loop.first %}checked{% endif %}>
+                        <strong>{{ texto }}</strong>
+                        <span>{{ descripciones[valor] }}</span>
+                    </label>
+                    {% endfor %}
+                </div>
+
+                <div class="campo" id="campo-precio">
+                    <label for="precio" id="etiqueta-precio">Precio</label>
+                    <div class="campo__con-sufijo campo__con-sufijo--ancho">
+                        <input id="precio" name="precio" type="number" min="0" step="any">
+                        <span class="campo__sufijo" id="sufijo-precio">COP</span>
+                    </div>
+                    <p class="campo__ayuda" id="ayuda-precio">Precio por unidad de medida.</p>
+                </div>
+            </div>
+
+            {% if not editando %}
+            {% set paso.n = paso.n + 1 %}
+            <div class="seccion-formulario">
+                <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">{{ paso.n }}</span> Más fotos <span class="campo__opcional texto-sm">(opcional)</span></h2>
+                <div class="campo">
+                    <label for="fotos-adicionales">Agrega otras fotos del material</label>
+                    <input id="fotos-adicionales" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+                    <p class="campo__ayuda">JPG, PNG o WEBP de hasta {{ tamano_maximo_archivo_mb }} MB cada una.</p>
+                </div>
+                <div class="vistas-previas" id="vistas-previas"></div>
+            </div>
+            {% endif %}
+
+            <div class="acciones-formulario">
+                <a class="boton boton--secundario boton--lg" href="{{ url_for('pagina_material', material_id=material_id) if editando else url_for('pagina_mis_materiales') }}">Cancelar</a>
+                <button class="boton boton--lg" type="submit">{{ icono("check") }} {{ "Guardar cambios" if editando else "Publicar material" }}</button>
+            </div>
+        </form>
+
+        <aside class="formulario-material__ayuda tarjeta tarjeta__cuerpo">
+            <h3>Consejos para publicar</h3>
+            <ul>
+                <li>Toma la foto con buena luz y que el material ocupe casi todo el encuadre.</li>
+                <li>Si la IA confirma la categoría, tu publicación aparecerá como <strong>verificada</strong>.</li>
+                <li>Indica medidas y cantidad reales: así calculamos mejor las coincidencias.</li>
+                <li>Al publicar, buscamos de inmediato empresas que necesiten este material.</li>
+            </ul>
+        </aside>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/ia.js') }}"></script>
+<script src="{{ url_for('static', path='js/modulos/material.js') }}"></script>
+{% endblock %}

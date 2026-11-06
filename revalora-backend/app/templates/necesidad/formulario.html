@@ -1,0 +1,121 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% set editando = necesidad_id is not none %}
+{% block titulo %}{{ "Editar necesidad" if editando else "Publicar necesidad" }} · REVALORA{% endblock %}
+{% block pagina %}necesidad-formulario{% endblock %}
+{% block datos_pagina %}{% if editando %}data-necesidad-id="{{ necesidad_id }}"{% endif %}{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <nav class="migas" aria-label="Ruta">
+        <a href="{{ url_for('pagina_mis_necesidades') }}">Mis necesidades</a><span aria-hidden="true">/</span>
+        <span>{{ "Editar" if editando else "Publicar" }}</span>
+    </nav>
+    <div class="pagina__cabecera">
+        <div>
+            <h1>{{ "Editar necesidad" if editando else "¿Qué material necesitas?" }}</h1>
+            <p>{{ "Actualiza lo que buscas; recalcularemos las coincidencias." if editando else "Al publicar, buscamos de inmediato los sobrantes disponibles que te sirven." }}</p>
+        </div>
+    </div>
+
+    <div class="formulario-material">
+        <form class="pila pila--lg" id="formulario-necesidad" novalidate>
+            <div class="alerta alerta--error formulario__error" hidden></div>
+
+            <div class="seccion-formulario">
+                <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">1</span> Material que buscas</h2>
+                <div class="campo">
+                    <label for="titulo">Título</label>
+                    <input id="titulo" name="titulo" required minlength="3" maxlength="150" placeholder="Ej.: Busco retazos de madera para marcos">
+                </div>
+                <div class="campo">
+                    <label for="categoria_id">Categoría</label>
+                    <select id="categoria_id" name="categoria_id" required>
+                        <option value="">Selecciona una categoría</option>
+                    </select>
+                </div>
+                <div class="campo">
+                    <label for="descripcion">Descripción <span class="campo__opcional">(opcional)</span></label>
+                    <textarea id="descripcion" name="descripcion" maxlength="2000" data-enviar-vacio
+                              placeholder="Para qué lo usarás, tipo de material, colores, cada cuánto lo necesitas…"></textarea>
+                </div>
+            </div>
+
+            <div class="seccion-formulario">
+                <h2 class="seccion-formulario__titulo"><span class="seccion-formulario__paso">2</span> Cantidad y condiciones</h2>
+                <div class="rejilla-campos rejilla-campos--2">
+                    <div class="campo">
+                        <label for="cantidad">Cantidad que necesitas</label>
+                        <input id="cantidad" name="cantidad" type="number" min="0.001" step="any" required>
+                    </div>
+                    <div class="campo">
+                        <label for="unidad_medida">Unidad de medida</label>
+                        <select id="unidad_medida" name="unidad_medida" required>
+                            {% for valor, texto in etiquetas.unidad_medida.items() %}
+                            <option value="{{ valor }}">{{ texto }} ({{ etiquetas.unidad_corta[valor] }})</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="campo">
+                    <span class="campo__etiqueta" id="etiqueta-estado">Estado mínimo aceptable</span>
+                    <div class="opciones opciones--pastillas" role="radiogroup" aria-labelledby="etiqueta-estado">
+                        {% for valor, texto in etiquetas.estado_material.items() %}
+                        <label class="opcion"><input type="radio" name="estado_minimo" value="{{ valor }}" required {% if valor == "REGULAR" %}checked{% endif %}><strong>{{ texto }}</strong></label>
+                        {% endfor %}
+                    </div>
+                    <p class="campo__ayuda">Solo te mostraremos materiales en este estado o mejor.</p>
+                </div>
+
+                <div class="campo">
+                    <label for="presupuesto_maximo">Presupuesto máximo <span class="campo__opcional">(opcional)</span></label>
+                    <div class="campo__con-sufijo">
+                        <input id="presupuesto_maximo" name="presupuesto_maximo" type="number" min="0" step="any" data-enviar-vacio>
+                        <span class="campo__sufijo">COP</span>
+                    </div>
+                    <p class="campo__ayuda">Total que estás dispuesto a pagar por toda la cantidad. Déjalo vacío si aceptas intercambios o donaciones.</p>
+                </div>
+
+                <div class="campo">
+                    <span class="campo__etiqueta">Dimensiones mínimas <span class="campo__opcional">(opcional, en cm)</span></span>
+                    <div class="rejilla-campos rejilla-campos--3">
+                        {% for clave, texto in [("largo_cm", "Largo"), ("ancho_cm", "Ancho"), ("alto_cm", "Alto")] %}
+                        <div class="campo">
+                            <label class="solo-lectores" for="{{ clave }}">{{ texto }} mínimo</label>
+                            <div class="campo__con-sufijo">
+                                <input id="{{ clave }}" name="dimensiones_minimas.{{ clave }}" type="number" min="0.01" step="any" placeholder="{{ texto }}">
+                                <span class="campo__sufijo">cm</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="acciones-formulario">
+                <a class="boton boton--secundario boton--lg" href="{{ url_for('pagina_necesidad', necesidad_id=necesidad_id) if editando else url_for('pagina_mis_necesidades') }}">Cancelar</a>
+                <button class="boton boton--lg" type="submit">{{ icono("check") }} {{ "Guardar cambios" if editando else "Publicar necesidad" }}</button>
+            </div>
+        </form>
+
+        <aside class="formulario-material__ayuda tarjeta tarjeta__cuerpo">
+            <h3>¿Cómo encontramos tu material?</h3>
+            <ul>
+                <li>Cruzamos tu necesidad con los sobrantes de la misma categoría publicados por otras empresas.</li>
+                <li>La compatibilidad pondera material, cantidad, estado, dimensiones, cercanía y precio.</li>
+                <li>Verás las coincidencias en el detalle de la necesidad, de la más a la menos compatible.</li>
+            </ul>
+        </aside>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/necesidad.js') }}"></script>
+{% endblock %}

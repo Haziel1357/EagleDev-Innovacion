@@ -1,0 +1,152 @@
+/* REVALORA · reconocimiento de materiales con IA */
+
+.zona-foto {
+    position: relative;
+    display: grid;
+    place-items: center;
+    gap: var(--esp-2);
+    min-height: 220px;
+    padding: var(--esp-6) var(--esp-4);
+    border: 2px dashed var(--borde-fuerte);
+    border-radius: var(--radio-lg);
+    background: var(--superficie-2);
+    color: var(--texto-2);
+    text-align: center;
+    cursor: pointer;
+    transition: border-color var(--transicion), background var(--transicion);
+}
+
+.zona-foto:hover,
+.zona-foto.arrastrando {
+    border-color: var(--verde-500);
+    background: var(--verde-50);
+}
+
+.zona-foto:focus-within {
+    outline: 3px solid var(--verde-200);
+    outline-offset: 2px;
+}
+
+.zona-foto input {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.zona-foto__icono {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: var(--superficie);
+    color: var(--verde-600);
+    box-shadow: var(--sombra-sm);
+}
+
+.zona-foto__icono svg {
+    width: 26px;
+    height: 26px;
+}
+
+.zona-foto strong {
+    color: var(--texto);
+}
+
+.zona-foto small {
+    color: var(--texto-3);
+}
+
+/* Resultado del reconocimiento */
+.reconocimiento {
+    display: grid;
+    grid-template-columns: 180px minmax(0, 1fr);
+    gap: var(--esp-5);
+    align-items: start;
+}
+
+.reconocimiento__foto {
+    position: relative;
+    aspect-ratio: 1;
+    overflow: hidden;
+    border-radius: var(--radio-lg);
+    background: var(--superficie-2);
+}
+
+.reconocimiento__foto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.reconocimiento__foto.analizando::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, transparent 0%, rgb(43 149 99 / 0.35) 50%, transparent 100%);
+    background-size: 100% 60%;
+    background-repeat: no-repeat;
+    animation: escanear 1.4s ease-in-out infinite;
+}
+
+@keyframes escanear {
+    from { background-position: 0 -100%; }
+    to { background-position: 0 250%; }
+}
+
+.reconocimiento__resultado {
+    display: grid;
+    gap: var(--esp-3);
+}
+
+.reconocimiento__titulo {
+    display: flex;
+    align-items: center;
+    gap: var(--esp-2);
+    margin: 0;
+    font-size: var(--texto-sm);
+    font-weight: 650;
+    color: var(--texto-2);
+}
+
+.reconocimiento__titulo svg {
+    width: 18px;
+    height: 18px;
+    color: var(--verde-600);
+}
+
+.reconocimiento__material {
+    margin: 0;
+    font-size: var(--texto-2xl);
+    font-weight: 800;
+    color: var(--verde-950);
+}
+
+.reconocimiento__confianza {
+    display: grid;
+    gap: 6px;
+    max-width: 320px;
+    font-size: var(--texto-xs);
+    color: var(--texto-3);
+}
+
+.reconocimiento__alternativas {
+    display: grid;
+    gap: var(--esp-2);
+}
+
+.reconocimiento__alternativas .chips .chip {
+    padding: 4px 12px;
+    font-size: var(--texto-xs);
+}
+
+@media (max-width: 640px) {
+    .reconocimiento {
+        grid-template-columns: 1fr;
+    }
+
+    .reconocimiento__foto {
+        max-width: 220px;
+    }
+}

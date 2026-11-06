@@ -1,0 +1,28 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% block titulo %}Mis materiales · REVALORA{% endblock %}
+{% block pagina %}mis-materiales{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <div class="pagina__cabecera">
+        <div>
+            <h1>Mis materiales</h1>
+            <p>Publicaciones de {{ usuario.empresa.nombre }}. Cambia su disponibilidad o retíralas cuando ya no estén.</p>
+        </div>
+        <a class="boton boton--acento" href="{{ url_for('pagina_publicar_material') }}">{{ icono("mas") }} Publicar sobrante</a>
+    </div>
+
+    <div id="mis-materiales"><div class="cargando">Cargando tus materiales…</div></div>
+    <nav class="paginacion" id="paginacion" aria-label="Paginación"></nav>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/material.js') }}"></script>
+{% endblock %}

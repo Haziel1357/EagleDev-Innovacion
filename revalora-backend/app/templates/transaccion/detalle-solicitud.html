@@ -1,0 +1,24 @@
+{% extends "layout/base.html" %}
+
+{% block titulo %}Solicitud · REVALORA{% endblock %}
+{% block pagina %}solicitud-detalle{% endblock %}
+{% block datos_pagina %}data-solicitud-id="{{ solicitud_id }}"{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/transaccion.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <nav class="migas" aria-label="Ruta">
+        <a href="{{ url_for('pagina_solicitudes') }}">Solicitudes</a><span aria-hidden="true">/</span>
+        <span>Solicitud #{{ solicitud_id }}</span>
+    </nav>
+    <div id="solicitud"><div class="cargando">Cargando solicitud…</div></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/transaccion.js') }}"></script>
+{% endblock %}

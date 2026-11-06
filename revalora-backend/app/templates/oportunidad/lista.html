@@ -1,0 +1,51 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% block titulo %}Oportunidades productivas · REVALORA{% endblock %}
+{% block pagina %}oportunidades{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/oportunidad.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <div class="pagina__cabecera">
+        <div>
+            <h1>Oportunidades productivas</h1>
+            <p>Descubre qué productos puede fabricar {{ usuario.empresa.nombre }} con sus materiales y cuáles le faltan.</p>
+        </div>
+    </div>
+
+    <form class="seccion-formulario analisis" id="formulario-analisis" novalidate>
+        <div class="analisis__texto">
+            <h2 class="seccion-formulario__titulo">{{ icono("chispas") }} Nuevo análisis con IA</h2>
+            <p class="texto-sm texto-secundario">Por defecto analizamos los materiales disponibles que tienes publicados. También puedes elegir categorías concretas.</p>
+        </div>
+        <div class="alerta alerta--error formulario__error" hidden></div>
+        <div class="campo">
+            <span class="campo__etiqueta">Materiales a analizar <span class="campo__opcional">(opcional)</span></span>
+            <div class="chips" id="categorias-analisis" role="group" aria-label="Categorías"></div>
+        </div>
+        <div class="fila fila--entre">
+            <div class="campo">
+                <label for="max_productos">Productos a sugerir</label>
+                <select id="max_productos" name="max_productos" class="catalogo__orden">
+                    <option value="3">3</option>
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <button class="boton boton--lg" type="submit">{{ icono("chispas") }} Analizar oportunidades</button>
+        </div>
+    </form>
+
+    <h2 class="titulo-seccion">Análisis anteriores</h2>
+    <div id="oportunidades"><div class="cargando">Cargando…</div></div>
+    <nav class="paginacion" id="paginacion" aria-label="Paginación"></nav>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/oportunidad.js') }}"></script>
+{% endblock %}

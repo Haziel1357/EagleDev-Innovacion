@@ -38,6 +38,23 @@ def obtener_usuario_opcional(
     return usuario
 
 
+def obtener_usuario_de_pagina(request: Request, db: DbSession) -> Usuario | None:
+    """Usuario de la cookie de sesión para las vistas HTML.
+
+    A diferencia de ``obtener_usuario_opcional``, nunca lanza error: si la cookie
+    expiró o no es válida, la página se muestra como si no hubiera sesión.
+    """
+    token = request.cookies.get(COOKIE_TOKEN)
+    if not token:
+        return None
+    try:
+        usuario_id = leer_usuario_id(token)
+    except NoAutenticadoError:
+        return None
+    usuario = db.get(Usuario, usuario_id)
+    return usuario if usuario is not None and usuario.activo else None
+
+
 def obtener_usuario_actual(
     usuario: Annotated[Usuario | None, Depends(obtener_usuario_opcional)],
 ) -> Usuario:
@@ -61,5 +78,6 @@ def obtener_empresa_actual(usuario: Annotated[Usuario, Depends(obtener_usuario_a
 
 UsuarioActual = Annotated[Usuario, Depends(obtener_usuario_actual)]
 UsuarioOpcional = Annotated[Usuario | None, Depends(obtener_usuario_opcional)]
+UsuarioPagina = Annotated[Usuario | None, Depends(obtener_usuario_de_pagina)]
 AdminActual = Annotated[Usuario, Depends(requerir_admin)]
 EmpresaActual = Annotated[Empresa, Depends(obtener_empresa_actual)]

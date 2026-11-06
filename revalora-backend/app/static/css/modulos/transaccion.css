@@ -1,0 +1,259 @@
+/* REVALORA · transacciones (solicitudes e historial) */
+
+.barra-solicitudes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--esp-3);
+    margin-bottom: var(--esp-5);
+    border-bottom: 1px solid var(--borde);
+}
+
+.barra-solicitudes .pestanas {
+    margin-bottom: -1px;
+    border-bottom: 0;
+}
+
+.barra-solicitudes .campo {
+    margin-bottom: var(--esp-2);
+}
+
+.pestana .contador {
+    margin-left: 4px;
+}
+
+/* Estados de una solicitud */
+.estado-PENDIENTE { background: var(--aviso-fondo); color: var(--aviso); }
+.estado-ACEPTADA { background: var(--info-fondo); color: var(--info); }
+.estado-RECHAZADA { background: var(--error-fondo); color: var(--error); }
+.estado-CANCELADA { background: var(--superficie-2); color: var(--texto-3); }
+.estado-COMPLETADA { background: var(--verde-100); color: var(--verde-800); }
+
+/* Lista */
+.solicitudes {
+    display: grid;
+    gap: var(--esp-3);
+}
+
+.solicitud {
+    display: grid;
+    grid-template-columns: 64px minmax(0, 1fr) auto;
+    gap: var(--esp-4);
+    align-items: center;
+    padding: var(--esp-4);
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio-lg);
+}
+
+.solicitud--pendiente {
+    border-left: 4px solid #d69e2e;
+}
+
+.solicitud__imagen {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    overflow: hidden;
+    border-radius: var(--radio);
+    background: var(--fondo-categoria, var(--superficie-2));
+    font-size: 1.8rem;
+}
+
+.solicitud__imagen img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.solicitud__info {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+}
+
+.solicitud__titulo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--esp-2);
+}
+
+.solicitud__titulo a {
+    font-weight: 700;
+    color: var(--texto);
+    text-decoration: none;
+}
+
+.solicitud__titulo a:hover {
+    color: var(--verde-700);
+    text-decoration: underline;
+}
+
+.solicitud__meta {
+    font-size: var(--texto-sm);
+    color: var(--texto-2);
+}
+
+.solicitud__fecha {
+    font-size: var(--texto-xs);
+    color: var(--texto-3);
+}
+
+.solicitud__acciones {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: var(--esp-2);
+}
+
+/* Detalle */
+.partes {
+    display: grid;
+    gap: var(--esp-3);
+}
+
+.parte {
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+    font-size: var(--texto-sm);
+}
+
+.parte .avatar {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: var(--tierra-500);
+}
+
+.parte div {
+    display: grid;
+}
+
+.parte span {
+    font-size: var(--texto-xs);
+    color: var(--texto-3);
+}
+
+.parte__flecha {
+    margin-left: 12px;
+    color: var(--texto-3);
+}
+
+.mensaje-solicitud {
+    margin: 0;
+    padding: var(--esp-4);
+    border-left: 3px solid var(--verde-200);
+    border-radius: 0 var(--radio) var(--radio) 0;
+    background: var(--verde-50);
+    color: var(--texto-2);
+    white-space: pre-line;
+}
+
+.material-resumen {
+    display: flex;
+    align-items: center;
+    gap: var(--esp-3);
+    padding: var(--esp-3);
+    border: 1px solid var(--borde);
+    border-radius: var(--radio);
+    background: var(--superficie);
+    color: inherit;
+    text-decoration: none;
+}
+
+.material-resumen:hover {
+    border-color: var(--verde-200);
+    color: inherit;
+}
+
+.material-resumen div {
+    display: grid;
+    min-width: 0;
+    font-size: var(--texto-sm);
+}
+
+.material-resumen span {
+    font-size: var(--texto-xs);
+    color: var(--texto-3);
+}
+
+/* Línea de tiempo */
+.linea-tiempo {
+    position: relative;
+    display: grid;
+    gap: var(--esp-4);
+    margin: 0;
+    padding: 0 0 0 var(--esp-5);
+    list-style: none;
+}
+
+.linea-tiempo::before {
+    content: "";
+    position: absolute;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    width: 2px;
+    background: var(--borde);
+}
+
+.linea-tiempo li {
+    position: relative;
+}
+
+.linea-tiempo li::before {
+    content: "";
+    position: absolute;
+    left: calc(-1 * var(--esp-5) + 2px);
+    top: 5px;
+    width: 12px;
+    height: 12px;
+    border: 2px solid var(--superficie);
+    border-radius: 50%;
+    background: var(--verde-500);
+    box-shadow: 0 0 0 1px var(--borde-fuerte);
+}
+
+.linea-tiempo__cabecera {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--esp-2);
+    font-size: var(--texto-sm);
+}
+
+.linea-tiempo__fecha {
+    font-size: var(--texto-xs);
+    color: var(--texto-3);
+}
+
+.linea-tiempo__comentario {
+    margin: 6px 0 0;
+    font-size: var(--texto-sm);
+    color: var(--texto-2);
+    font-style: italic;
+}
+
+@media (max-width: 640px) {
+    .solicitud {
+        grid-template-columns: 52px minmax(0, 1fr);
+    }
+
+    .solicitud__imagen {
+        width: 52px;
+        height: 52px;
+    }
+
+    .solicitud__acciones {
+        grid-column: 1 / -1;
+        justify-content: stretch;
+    }
+
+    .solicitud__acciones .boton {
+        flex: 1;
+    }
+}
