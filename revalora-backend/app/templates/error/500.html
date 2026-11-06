@@ -3,7 +3,12 @@
 {% block titulo %}Error del servidor · REVALORA{% endblock %}
 
 {% block contenido %}
-<h1>Algo salió mal</h1>
-<p>Ocurrió un error inesperado. Inténtalo de nuevo más tarde.</p>
-<a href="{{ url_for('inicio') }}">Volver al inicio</a>
+<section class="contenedor contenedor--estrecho pagina">
+    <div class="vacio">
+        <div class="vacio__icono" aria-hidden="true">🛠️</div>
+        <h1>Algo salió mal</h1>
+        <p>Ocurrió un error inesperado. Inténtalo de nuevo más tarde.</p>
+        <a class="boton" href="{{ url_for('inicio') }}">Volver al inicio</a>
+    </div>
+</section>
 {% endblock %}

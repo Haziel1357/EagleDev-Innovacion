@@ -1,0 +1,53 @@
+{% from "fragments/iconos.html" import icono %}
+<nav class="nav" id="nav-principal" aria-label="Principal">
+    <ul class="nav__enlaces">
+        <li><a class="nav__enlace" href="{{ url_for('pagina_materiales') }}">{{ icono("buscar") }} Materiales</a></li>
+        <li><a class="nav__enlace" href="{{ url_for('pagina_necesidades') }}">{{ icono("lista") }} Necesidades</a></li>
+        <li><a class="nav__enlace" href="{{ url_for('pagina_buscador') }}">{{ icono("chispas") }} Buscador IA</a></li>
+        {% if usuario and usuario.empresa %}
+        <li>
+            <a class="nav__enlace" href="{{ url_for('pagina_solicitudes') }}">
+                {{ icono("intercambio") }} Solicitudes
+                <span class="contador" data-contador-solicitudes hidden></span>
+            </a>
+        </li>
+        {% endif %}
+    </ul>
+
+    <div class="nav__cuenta">
+        {% if usuario %}
+            {% if usuario.empresa %}
+            <a class="boton boton--acento" href="{{ url_for('pagina_publicar_material') }}">{{ icono("mas") }} Publicar sobrante</a>
+            {% else %}
+            <a class="boton boton--acento" href="{{ url_for('pagina_mi_empresa') }}">{{ icono("empresa") }} Registrar empresa</a>
+            {% endif %}
+
+            <div class="menu-cuenta">
+                <button class="menu-cuenta__boton" type="button" aria-haspopup="true" aria-expanded="false">
+                    <span class="avatar" aria-hidden="true">{{ usuario.nombre.split()[:2] | map("first") | join | upper }}</span>
+                    <span>{{ usuario.nombre.split()[0] }}</span>
+                </button>
+                <div class="menu-cuenta__panel" hidden>
+                    <div class="menu-cuenta__datos">
+                        <strong>{{ usuario.nombre }}</strong>
+                        <span>{{ usuario.email }}</span>
+                    </div>
+                    {% if usuario.empresa %}
+                    <a class="menu-cuenta__item" href="{{ url_for('pagina_mis_materiales') }}">{{ icono("caja") }} Mis materiales</a>
+                    <a class="menu-cuenta__item" href="{{ url_for('pagina_mis_necesidades') }}">{{ icono("lista") }} Mis necesidades</a>
+                    <a class="menu-cuenta__item" href="{{ url_for('pagina_coincidencias') }}">{{ icono("estrella") }} Coincidencias</a>
+                    <a class="menu-cuenta__item" href="{{ url_for('pagina_oportunidades') }}">{{ icono("hoja") }} Oportunidades productivas</a>
+                    <a class="menu-cuenta__item" href="{{ url_for('pagina_solicitudes') }}">{{ icono("intercambio") }} Solicitudes</a>
+                    <a class="menu-cuenta__item" href="{{ url_for('pagina_historial') }}">{{ icono("regla") }} Historial de operaciones</a>
+                    {% endif %}
+                    <a class="menu-cuenta__item" href="{{ url_for('pagina_mi_empresa') }}">{{ icono("empresa") }} {{ "Mi empresa" if usuario.empresa else "Registrar empresa" }}</a>
+                    <a class="menu-cuenta__item" href="{{ url_for('pagina_perfil') }}">{{ icono("usuario") }} Mi perfil</a>
+                    <button class="menu-cuenta__item" type="button" data-cerrar-sesion>{{ icono("salir") }} Cerrar sesión</button>
+                </div>
+            </div>
+        {% else %}
+            <a class="boton boton--fantasma" href="{{ url_for('pagina_ingresar') }}">Ingresar</a>
+            <a class="boton" href="{{ url_for('pagina_registro') }}">Crear cuenta</a>
+        {% endif %}
+    </div>
+</nav>

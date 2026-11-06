@@ -1,6 +1,127 @@
 {% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% block pagina %}inicio{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/inicio.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+{% endblock %}
 
 {% block contenido %}
-<h1>REVALORA</h1>
-<p>Plataforma para el intercambio y aprovechamiento de materiales sobrantes.</p>
+<section class="portada">
+    <div class="contenedor portada__contenido">
+        <div class="portada__texto">
+            <span class="etiqueta etiqueta--verde">{{ icono("hoja") }} Economía circular para emprendimientos</span>
+            <h1>Lo que a ti te sobra, a otra empresa le sirve.</h1>
+            <p class="portada__bajada">
+                REVALORA conecta a microempresas, pequeñas empresas y emprendimientos que generan
+                materiales sobrantes con quienes los necesitan como materia prima. Publica con una foto,
+                la IA reconoce el material y nosotros encontramos con quién intercambiarlo.
+            </p>
+
+            <form class="buscador-portada" action="{{ url_for('pagina_materiales') }}" method="get" role="search">
+                <label class="solo-lectores" for="busqueda-portada">Buscar materiales</label>
+                {{ icono("buscar") }}
+                <input id="busqueda-portada" name="texto" type="search" placeholder="Busca madera, cartón, retazos de tela…" autocomplete="off">
+                <button class="boton" type="submit">Buscar</button>
+            </form>
+
+            <div class="portada__acciones">
+                {% if usuario and usuario.empresa %}
+                <a class="boton boton--acento boton--lg" href="{{ url_for('pagina_publicar_material') }}">{{ icono("camara") }} Publicar un sobrante</a>
+                {% elif usuario %}
+                <a class="boton boton--acento boton--lg" href="{{ url_for('pagina_mi_empresa') }}">{{ icono("empresa") }} Registrar mi empresa</a>
+                {% else %}
+                <a class="boton boton--acento boton--lg" href="{{ url_for('pagina_registro') }}">Crear cuenta gratis {{ icono("flecha") }}</a>
+                {% endif %}
+                <a class="boton boton--secundario boton--lg" href="{{ url_for('pagina_materiales') }}">Explorar materiales</a>
+            </div>
+            <p class="portada__ia">
+                {{ icono("chispas") }} ¿No sabes qué buscar?
+                <a href="{{ url_for('pagina_buscador') }}">Cuéntale a la IA qué quieres fabricar</a>
+            </p>
+        </div>
+
+        <div class="portada__visual" aria-hidden="true">
+            <div class="flujo">
+                <div class="flujo__tarjeta flujo__tarjeta--a">
+                    <span class="flujo__emoji">🪵</span>
+                    <div><strong>Retazos de pino</strong><span>Mueblería · 40 und.</span></div>
+                    <span class="etiqueta etiqueta--verde">{{ icono("verificado") }} IA 94 %</span>
+                </div>
+                <div class="flujo__conector">{{ icono("intercambio") }}</div>
+                <div class="flujo__tarjeta flujo__tarjeta--b">
+                    <span class="flujo__emoji">🖼️</span>
+                    <div><strong>Marcos para cuadros</strong><span>Taller de artesanías</span></div>
+                    <span class="etiqueta etiqueta--tierra">92 % compatible</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="contenedor seccion-inicio">
+    <div class="seccion-inicio__cabecera">
+        <h2>Explora por material</h2>
+        <a href="{{ url_for('pagina_materiales') }}">Ver todo el catálogo {{ icono("flecha") }}</a>
+    </div>
+    <div class="categorias-inicio" id="categorias-inicio">
+        {% for _ in range(8) %}<div class="esqueleto" style="height:96px"></div>{% endfor %}
+    </div>
+</section>
+
+<section class="contenedor seccion-inicio">
+    <div class="seccion-inicio__cabecera">
+        <h2>Publicados recientemente</h2>
+        <a href="{{ url_for('pagina_materiales') }}">Ver más {{ icono("flecha") }}</a>
+    </div>
+    <div class="rejilla-materiales" id="recientes">
+        {% for _ in range(4) %}<div class="esqueleto" style="height:300px"></div>{% endfor %}
+    </div>
+</section>
+
+<section class="pasos">
+    <div class="contenedor">
+        <h2>¿Cómo funciona?</h2>
+        <ol class="pasos__lista">
+            <li>
+                <span class="pasos__icono">{{ icono("camara") }}</span>
+                <h3>Toma una foto</h3>
+                <p>Sube la foto de tu sobrante. La IA reconoce si es madera, cartón, plástico, tela o metal y verifica que la publicación sea real.</p>
+            </li>
+            <li>
+                <span class="pasos__icono">{{ icono("chispas") }}</span>
+                <h3>Encuentra coincidencias</h3>
+                <p>Cruzamos ofertas y necesidades según material, cantidad, estado, dimensiones, cercanía y precio.</p>
+            </li>
+            <li>
+                <span class="pasos__icono">{{ icono("intercambio") }}</span>
+                <h3>Vende, intercambia o dona</h3>
+                <p>Recibe solicitudes de compra o intercambio, acéptalas y lleva el historial de cada operación.</p>
+            </li>
+        </ol>
+    </div>
+</section>
+
+<section class="contenedor seccion-inicio ods">
+    <div class="ods__tarjeta">
+        <span class="ods__numero">8.3</span>
+        <div>
+            <h3>Emprendimiento y crecimiento</h3>
+            <p>Reduce el costo de la materia prima y abre nuevas fuentes de ingreso con la venta de sobrantes.</p>
+        </div>
+    </div>
+    <div class="ods__tarjeta">
+        <span class="ods__numero">8.4</span>
+        <div>
+            <h3>Uso eficiente de los recursos</h3>
+            <p>Da una segunda vida a los materiales y evita que terminen como residuo.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/material.js') }}"></script>
 {% endblock %}

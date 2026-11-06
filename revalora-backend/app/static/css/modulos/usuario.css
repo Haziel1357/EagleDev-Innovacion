@@ -1,0 +1,108 @@
+/* REVALORA · usuario (ingreso, registro y perfil) */
+
+.acceso {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - var(--alto-cabecera));
+}
+
+.acceso__panel {
+    width: 100%;
+    max-width: 440px;
+    margin: auto;
+    padding: var(--esp-7) var(--esp-4);
+}
+
+.acceso__panel h1 {
+    font-size: var(--texto-2xl);
+}
+
+.acceso__panel .formulario {
+    margin-top: var(--esp-5);
+}
+
+.acceso__cambio {
+    margin-top: var(--esp-5);
+    text-align: center;
+    font-size: var(--texto-sm);
+    color: var(--texto-2);
+}
+
+.acceso__lateral {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--esp-6);
+    padding: var(--esp-8) var(--esp-7);
+    background:
+        radial-gradient(500px 300px at 100% 0%, rgb(43 149 99 / 0.45), transparent 70%),
+        var(--verde-900);
+    color: rgb(255 255 255 / 0.85);
+}
+
+.acceso__lateral h2 {
+    max-width: 18ch;
+    color: #fff;
+    font-size: var(--texto-2xl);
+}
+
+.acceso__beneficios {
+    display: grid;
+    gap: var(--esp-4);
+    margin: var(--esp-6) 0 0;
+    padding: 0;
+    list-style: none;
+}
+
+.acceso__beneficios li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--esp-3);
+}
+
+.acceso__beneficios svg {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    padding: 7px;
+    border-radius: 10px;
+    background: rgb(255 255 255 / 0.1);
+    color: var(--verde-200);
+}
+
+.acceso__cita {
+    margin: 0;
+    font-size: var(--texto-sm);
+    font-style: italic;
+    color: rgb(255 255 255 / 0.6);
+}
+
+.perfil-resumen {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--esp-4);
+    padding: var(--esp-5);
+}
+
+.perfil-resumen > div {
+    display: grid;
+    flex: 1;
+}
+
+.avatar--grande {
+    width: 56px;
+    height: 56px;
+    font-size: var(--texto-lg);
+}
+
+@media (max-width: 860px) {
+    .acceso {
+        grid-template-columns: 1fr;
+        min-height: 0;
+    }
+
+    .acceso__lateral {
+        display: none;
+    }
+}

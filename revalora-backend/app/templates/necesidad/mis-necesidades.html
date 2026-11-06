@@ -1,0 +1,36 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% block titulo %}Mis necesidades · REVALORA{% endblock %}
+{% block pagina %}mis-necesidades{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/necesidad.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <div class="pagina__cabecera">
+        <div>
+            <h1>Mis necesidades</h1>
+            <p>Materiales que busca {{ usuario.empresa.nombre }}. Abre cada una para ver los sobrantes compatibles.</p>
+        </div>
+        <a class="boton boton--acento" href="{{ url_for('pagina_publicar_necesidad') }}">{{ icono("mas") }} Publicar necesidad</a>
+    </div>
+
+    <div class="pestanas" role="tablist" id="pestanas-estado">
+        <button class="pestana" role="tab" type="button" data-estado="" aria-selected="true">Todas</button>
+        {% for valor, texto in etiquetas.estado_necesidad.items() %}
+        <button class="pestana" role="tab" type="button" data-estado="{{ valor }}" aria-selected="false">{{ texto }}s</button>
+        {% endfor %}
+    </div>
+
+    <div id="mis-necesidades"><div class="cargando">Cargando tus necesidades…</div></div>
+    <nav class="paginacion" id="paginacion" aria-label="Paginación"></nav>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/necesidad.js') }}"></script>
+{% endblock %}

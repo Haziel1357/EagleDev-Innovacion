@@ -3,7 +3,12 @@
 {% block titulo %}Página no encontrada · REVALORA{% endblock %}
 
 {% block contenido %}
-<h1>Página no encontrada</h1>
-<p>La página que buscas no existe.</p>
-<a href="{{ url_for('inicio') }}">Volver al inicio</a>
+<section class="contenedor contenedor--estrecho pagina">
+    <div class="vacio">
+        <div class="vacio__icono" aria-hidden="true">🧭</div>
+        <h1>Página no encontrada</h1>
+        <p>La página que buscas no existe o fue movida.</p>
+        <a class="boton" href="{{ url_for('inicio') }}">Volver al inicio</a>
+    </div>
+</section>
 {% endblock %}

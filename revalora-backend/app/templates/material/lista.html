@@ -1,0 +1,120 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% block titulo %}Explorar materiales · REVALORA{% endblock %}
+{% block pagina %}materiales{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <div class="pagina__cabecera">
+        <div>
+            <h1>Materiales disponibles</h1>
+            <p>Sobrantes publicados por empresas y emprendimientos, listos para una segunda vida.</p>
+        </div>
+        {% if usuario and usuario.empresa %}
+        <a class="boton boton--acento" href="{{ url_for('pagina_publicar_material') }}">{{ icono("mas") }} Publicar sobrante</a>
+        {% endif %}
+    </div>
+
+    <form class="catalogo" id="filtros-materiales" role="search" novalidate>
+        <aside class="catalogo__filtros">
+            <div class="filtros">
+                <details open id="filtros-plegables">
+                    <summary>{{ icono("filtro") }} Filtros</summary>
+                    <div class="pila">
+                        <h2 class="filtros__titulo">Filtros <button type="button" id="limpiar-filtros">Limpiar</button></h2>
+
+                        <div class="campo">
+                            <label for="tipo_oferta">Tipo de oferta</label>
+                            <select id="tipo_oferta" name="tipo_oferta">
+                                <option value="">Todas</option>
+                                {% for valor, texto in etiquetas.tipo_oferta.items() %}
+                                <option value="{{ valor }}">{{ texto }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="campo">
+                            <label for="estado_minimo">Estado mínimo</label>
+                            <select id="estado_minimo" name="estado_minimo">
+                                <option value="">Cualquiera</option>
+                                {% for valor, texto in etiquetas.estado_material.items() %}
+                                <option value="{{ valor }}">{{ texto }}{% if not loop.first %} o mejor{% endif %}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="campo">
+                            <label for="precio_maximo">Precio máximo</label>
+                            <input id="precio_maximo" name="precio_maximo" type="number" min="0" step="any" placeholder="Sin límite">
+                        </div>
+
+                        <div class="campo">
+                            <label for="ciudad">Ciudad</label>
+                            <input id="ciudad" name="ciudad" maxlength="100" placeholder="Ej.: Bogotá">
+                        </div>
+
+                        <div class="campo">
+                            <label for="radio_km">Distancia máxima</label>
+                            <select id="radio_km" name="radio_km">
+                                <option value="">Sin límite</option>
+                                <option value="5">5 km</option>
+                                <option value="10">10 km</option>
+                                <option value="25">25 km</option>
+                                <option value="50">50 km</option>
+                                <option value="100">100 km</option>
+                            </select>
+                            <p class="campo__ayuda" id="ayuda-distancia">
+                                {% if usuario and usuario.empresa %}Se mide desde la ubicación de tu empresa.{% else %}Usa tu ubicación para filtrar por distancia.{% endif %}
+                            </p>
+                            <input type="hidden" name="latitud">
+                            <input type="hidden" name="longitud">
+                            <button class="boton boton--secundario boton--sm" type="button" id="usar-ubicacion">{{ icono("brujula") }} Usar mi ubicación</button>
+                        </div>
+
+                        <label class="casilla">
+                            <input type="checkbox" name="solo_verificados" value="true">
+                            Solo verificados con IA
+                        </label>
+                    </div>
+                </details>
+            </div>
+        </aside>
+
+        <div>
+            <div class="catalogo__barra">
+                <div class="campo catalogo__busqueda">
+                    <label class="solo-lectores" for="texto">Buscar</label>
+                    {{ icono("buscar") }}
+                    <input id="texto" name="texto" type="search" maxlength="100" placeholder="Buscar por título o descripción…">
+                </div>
+                <div class="campo">
+                    <label class="solo-lectores" for="orden">Ordenar por</label>
+                    <select class="catalogo__orden" id="orden" name="orden">
+                        <option value="recientes">Más recientes</option>
+                        <option value="precio">Menor precio</option>
+                        <option value="cercania">Más cercanos</option>
+                    </select>
+                </div>
+            </div>
+
+            <input type="hidden" name="categoria_id">
+            <div class="chips" id="chips-categorias" role="group" aria-label="Categorías"></div>
+
+            <p class="catalogo__resumen" id="resumen" aria-live="polite"></p>
+            <div class="rejilla-materiales" id="resultados">
+                {% for _ in range(6) %}<div class="esqueleto" style="height:300px"></div>{% endfor %}
+            </div>
+            <nav class="paginacion" id="paginacion" aria-label="Paginación"></nav>
+        </div>
+    </form>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/material.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "layout/base.html" %}
+
+{% block titulo %}Coincidencias · REVALORA{% endblock %}
+{% block pagina %}coincidencias{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/coincidencia.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <div class="pagina__cabecera">
+        <div>
+            <h1>Coincidencias</h1>
+            <p>Ofertas y necesidades compatibles con las de {{ usuario.empresa.nombre }}, de la más a la menos compatible.</p>
+        </div>
+    </div>
+
+    <div class="pestanas" role="tablist" id="pestanas-coincidencias">
+        <button class="pestana" role="tab" type="button" data-lado="" aria-selected="true">Todas</button>
+        <button class="pestana" role="tab" type="button" data-lado="materiales" aria-selected="false">Para mis materiales</button>
+        <button class="pestana" role="tab" type="button" data-lado="necesidades" aria-selected="false">Para mis necesidades</button>
+    </div>
+
+    <div id="coincidencias"><div class="cargando">Cargando coincidencias…</div></div>
+    <nav class="paginacion" id="paginacion" aria-label="Paginación"></nav>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/coincidencia.js') }}"></script>
+{% endblock %}

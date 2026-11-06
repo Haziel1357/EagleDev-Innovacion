@@ -1,0 +1,16 @@
+{% from "fragments/iconos.html" import icono, logo %}
+<header class="cabecera">
+    <div class="contenedor cabecera__barra">
+        <a class="marca" href="{{ url_for('inicio') }}" aria-label="REVALORA, ir al inicio">
+            {{ logo() }}
+            <span>REVALORA</span>
+        </a>
+
+        <button class="boton boton--secundario boton--icono nav__alternar" type="button"
+                aria-controls="nav-principal" aria-expanded="false" aria-label="Abrir menú">
+            {{ icono("menu") }}
+        </button>
+
+        {% include "fragments/navbar.html" %}
+    </div>
+</header>

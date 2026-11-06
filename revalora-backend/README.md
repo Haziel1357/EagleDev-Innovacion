@@ -103,6 +103,37 @@ Los errores responden siempre con el mismo formato: `{"estado", "error", "mensaj
 
 **Solicitudes.** El tipo debe corresponder a la oferta del material (VENTA → `COMPRA`, INTERCAMBIO → `INTERCAMBIO` con `material_ofrecido_id`, APROVECHAMIENTO → `APROVECHAMIENTO`). Al aceptar se descuenta la cantidad; si el material se agota, las demás solicitudes pendientes se rechazan solas. Cada cambio de estado queda en el historial.
 
+## Vistas (front end)
+
+Las páginas HTML van sin prefijo (`/materiales`) y la API JSON bajo `/api/v1` (`/api/v1/materiales`). Cada ruta de `app/controllers/web/paginas_controller.py` (y la portada, en `web/home/`) renderiza una plantilla Jinja2 (el esqueleto) y el JavaScript de su módulo carga los datos desde la API con la cookie de sesión. `static/js/api-client.js` agrega el prefijo `/api/v1` (lo recibe de `PREFIJO_API`). Si una página requiere sesión o empresa y no la hay, redirige a `/ingresar` o `/empresa` con `?siguiente=`.
+
+| Página | Ruta | Plantilla · JS |
+|---|---|---|
+| Inicio | `/` | `home/index.html` · `material.js` |
+| Ingresar / Crear cuenta / Perfil | `/ingresar`, `/registro`, `/perfil` | `usuario/*` · `usuario.js` |
+| Mi empresa / Perfil público | `/empresa`, `/empresas/{id}` | `empresa/*` · `empresa.js` |
+| Catálogo de materiales | `/materiales` | `material/lista.html` · `material.js` |
+| Detalle y solicitud (y coincidencias si es tuyo) | `/materiales/{id}` | `material/detalle.html` · `material.js`, `transaccion.js`, `coincidencia.js` |
+| Publicar / Editar (con IA) | `/materiales/publicar`, `/materiales/{id}/editar` | `material/formulario.html` · `material.js`, `ia.js` |
+| Mis materiales | `/mis-materiales` | `material/mis-materiales.html` · `material.js` |
+| Necesidades | `/necesidades`, `/necesidades/{id}` (coincidencias si es tuya) | `necesidad/lista.html`, `necesidad/detalle.html` · `necesidad.js`, `coincidencia.js` |
+| Publicar / Editar necesidad | `/necesidades/publicar`, `/necesidades/{id}/editar` | `necesidad/formulario.html` · `necesidad.js` |
+| Mis necesidades | `/mis-necesidades` | `necesidad/mis-necesidades.html` · `necesidad.js` |
+| Solicitudes recibidas y enviadas | `/solicitudes`, `/solicitudes/{id}` | `transaccion/solicitudes.html`, `transaccion/detalle-solicitud.html` · `transaccion.js` |
+| Historial de operaciones | `/historial` | `transaccion/historial.html` · `transaccion.js` |
+| Buscador inteligente (solo sesión) | `/buscador` | `buscador/buscador-inteligente.html` · `buscador.js`, `material.js` |
+| Todas mis coincidencias | `/coincidencias` | `coincidencia/lista.html` · `coincidencia.js` |
+| Oportunidades productivas | `/oportunidades`, `/oportunidades/{id}` | `oportunidad/*` · `oportunidad.js` |
+
+Plantillas que siguen vacías porque su función quedó cubierta por otras páginas: `buscador/busqueda-tradicional.html` y `buscador/resultados.html` (el catálogo usa `material/lista.html`), `coincidencia/detalle.html` (cada coincidencia enlaza al material o a la necesidad), e `ia/reconocimiento.html` e `ia/confirmar-clasificacion.html` (el reconocimiento ocurre dentro del formulario de publicar).
+
+Piezas compartidas:
+
+- `static/js/api-client.js`: `Api.*`, un método por endpoint; los errores llegan como `Api.ApiError` (`estado`, `message`, `detalles`).
+- `static/js/main.js`: `Revalora.*`, plantillas ``html`…` `` con escape automático, formato (moneda, cantidades, fechas en UTC), avisos, formularios (a JSON con nombres anidados como `ubicacion.ciudad` y errores 422 por campo) y `Revalora.pagina(nombre, fn)`, que arranca el JS según el `data-pagina` del `<body>`.
+- `app/utils/etiquetas.py`: textos legibles de las enumeraciones; llegan a las plantillas (`etiquetas`) y al JS (`Revalora.etiquetas`).
+- `static/css/main.css` (tokens de diseño y layout), `componentes.css` (botones, formularios, tarjetas…) y `css/modulos/*.css` por pantalla.
+
 ## Estructura
 
 ```

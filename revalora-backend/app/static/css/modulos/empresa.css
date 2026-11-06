@@ -1,0 +1,75 @@
+/* REVALORA · empresa (registro, edición y perfil público) */
+
+.coordenadas {
+    display: grid;
+    gap: var(--esp-3);
+    padding: var(--esp-4);
+    border-radius: var(--radio);
+    background: var(--superficie-2);
+}
+
+.coordenadas .boton {
+    justify-self: start;
+}
+
+.empresa-perfil {
+    overflow: hidden;
+}
+
+.empresa-perfil__portada {
+    height: 96px;
+    background:
+        radial-gradient(400px 120px at 90% 0%, rgb(43 149 99 / 0.5), transparent 70%),
+        var(--verde-800);
+}
+
+.empresa-perfil__cuerpo {
+    padding: 0 var(--esp-5) var(--esp-5);
+}
+
+.empresa-perfil__avatar {
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    margin-top: -42px;
+    margin-bottom: var(--esp-3);
+    border: 4px solid var(--superficie);
+    border-radius: 20px;
+    background: var(--tierra-500);
+    color: #fff;
+    font-size: var(--texto-xl);
+    font-weight: 800;
+}
+
+.empresa-perfil h1 {
+    margin-bottom: var(--esp-2);
+}
+
+.datos-lista {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--esp-4);
+    margin: var(--esp-5) 0 0;
+    padding: var(--esp-4) 0 0;
+    border-top: 1px solid var(--borde);
+}
+
+.datos-lista div {
+    display: grid;
+    gap: 2px;
+}
+
+.datos-lista dt {
+    font-size: var(--texto-xs);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--texto-3);
+}
+
+.datos-lista dd {
+    margin: 0;
+    font-size: var(--texto-sm);
+    word-break: break-word;
+}

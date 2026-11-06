@@ -3,22 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block titulo %}REVALORA{% endblock %}</title>
+    <meta name="description" content="{% block descripcion %}REVALORA conecta a las empresas que generan materiales sobrantes con quienes los necesitan como materia prima.{% endblock %}">
+    <title>{% block titulo %}REVALORA · Materiales sobrantes con nueva vida{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', path='img/logos/favicon.svg') }}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
     <link rel="stylesheet" href="{{ url_for('static', path='css/main.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/componentes.css') }}">
     {% block estilos %}{% endblock %}
 </head>
-<body>
+<body data-pagina="{% block pagina %}{% endblock %}" {% block datos_pagina %}{% endblock %}>
+    <a class="solo-lectores" href="#contenido">Saltar al contenido</a>
     {% include "fragments/header.html" %}
-    {% include "fragments/navbar.html" %}
 
-    <main>
+    <main id="contenido">
         {% include "fragments/alertas.html" %}
         {% block contenido %}{% endblock %}
     </main>
 
     {% include "fragments/footer.html" %}
 
+    <script>
+        window.REVALORA = {
+            prefijoApi: {{ prefijo_api | tojson }},
+            sesion: {{ sesion | default(none) | tojson }},
+            etiquetas: {{ etiquetas_json | tojson }},
+            solicitudPorOferta: {{ solicitud_por_oferta | tojson }},
+            tamanoMaximoMb: {{ tamano_maximo_archivo_mb }}
+        };
+    </script>
     <script src="{{ url_for('static', path='js/api-client.js') }}"></script>
     <script src="{{ url_for('static', path='js/main.js') }}"></script>
     {% block scripts %}{% endblock %}

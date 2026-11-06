@@ -1,0 +1,41 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% block titulo %}Ingresar · REVALORA{% endblock %}
+{% block pagina %}ingresar{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/usuario.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="acceso">
+    <div class="acceso__panel">
+        <h1>Bienvenido de nuevo</h1>
+        <p class="texto-secundario">Ingresa para publicar tus sobrantes y responder solicitudes.</p>
+
+        <form class="formulario" id="formulario-ingreso" novalidate>
+            <div class="alerta alerta--error formulario__error" hidden></div>
+
+            <div class="campo">
+                <label for="email">Correo electrónico</label>
+                <input id="email" name="email" type="email" autocomplete="email" required autofocus>
+            </div>
+            <div class="campo">
+                <label for="password">Contraseña</label>
+                <input id="password" name="password" type="password" autocomplete="current-password" required>
+            </div>
+
+            <button class="boton boton--lg boton--bloque" type="submit">Ingresar</button>
+        </form>
+
+        <p class="acceso__cambio">¿Aún no tienes cuenta? <a href="{{ url_for('pagina_registro') }}">Crea una gratis</a></p>
+    </div>
+
+    {% include "usuario/_lateral.html" %}
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/usuario.js') }}"></script>
+{% endblock %}

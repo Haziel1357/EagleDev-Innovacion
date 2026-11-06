@@ -1,0 +1,28 @@
+{% extends "layout/base.html" %}
+
+{% block titulo %}Material · REVALORA{% endblock %}
+{% block pagina %}material-detalle{% endblock %}
+{% block datos_pagina %}data-material-id="{{ material_id }}"{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/material.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/coincidencia.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor pagina">
+    <nav class="migas" aria-label="Ruta">
+        <a href="{{ url_for('inicio') }}">Inicio</a><span aria-hidden="true">/</span>
+        <a href="{{ url_for('pagina_materiales') }}">Materiales</a><span aria-hidden="true">/</span>
+        <span id="migas-titulo">Detalle</span>
+    </nav>
+    <div id="material"><div class="cargando">Cargando material…</div></div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/ia.js') }}"></script>
+<script src="{{ url_for('static', path='js/modulos/transaccion.js') }}"></script>
+<script src="{{ url_for('static', path='js/modulos/coincidencia.js') }}"></script>
+<script src="{{ url_for('static', path='js/modulos/material.js') }}"></script>
+{% endblock %}

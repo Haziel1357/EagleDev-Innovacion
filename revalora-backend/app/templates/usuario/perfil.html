@@ -1,0 +1,76 @@
+{% extends "layout/base.html" %}
+{% from "fragments/iconos.html" import icono %}
+
+{% block titulo %}Mi perfil · REVALORA{% endblock %}
+{% block pagina %}perfil{% endblock %}
+
+{% block estilos %}
+<link rel="stylesheet" href="{{ url_for('static', path='css/modulos/usuario.css') }}">
+{% endblock %}
+
+{% block contenido %}
+<section class="contenedor contenedor--estrecho pagina">
+    <div class="pagina__cabecera">
+        <div>
+            <h1>Mi perfil</h1>
+            <p>Tus datos de contacto y la seguridad de tu cuenta.</p>
+        </div>
+    </div>
+
+    <div class="pila pila--lg">
+        <div class="tarjeta perfil-resumen">
+            <span class="avatar avatar--grande" aria-hidden="true">{{ usuario.nombre.split()[:2] | map("first") | join | upper }}</span>
+            <div>
+                <strong>{{ usuario.nombre }}</strong>
+                <span class="texto-tenue">{{ usuario.email }}</span>
+            </div>
+            {% if usuario.empresa %}
+            <a class="boton boton--secundario boton--sm" href="{{ url_for('pagina_mi_empresa') }}">{{ icono("empresa") }} {{ usuario.empresa.nombre }}</a>
+            {% else %}
+            <a class="boton boton--acento boton--sm" href="{{ url_for('pagina_mi_empresa') }}">{{ icono("empresa") }} Registrar empresa</a>
+            {% endif %}
+        </div>
+
+        <form class="seccion-formulario" id="formulario-perfil" novalidate>
+            <h2 class="seccion-formulario__titulo">Datos personales</h2>
+            <div class="alerta alerta--error formulario__error" hidden></div>
+            <div class="rejilla-campos rejilla-campos--2">
+                <div class="campo">
+                    <label for="nombre">Nombre completo</label>
+                    <input id="nombre" name="nombre" value="{{ usuario.nombre }}" required minlength="2" maxlength="120" autocomplete="name">
+                </div>
+                <div class="campo">
+                    <label for="telefono">Teléfono <span class="campo__opcional">(opcional)</span></label>
+                    <input id="telefono" name="telefono" type="tel" value="{{ usuario.telefono or '' }}" maxlength="30" autocomplete="tel">
+                </div>
+            </div>
+            <div class="acciones-formulario">
+                <button class="boton" type="submit">{{ icono("check") }} Guardar cambios</button>
+            </div>
+        </form>
+
+        <form class="seccion-formulario" id="formulario-contrasena" novalidate>
+            <h2 class="seccion-formulario__titulo">Cambiar contraseña</h2>
+            <div class="alerta alerta--error formulario__error" hidden></div>
+            <div class="rejilla-campos rejilla-campos--2">
+                <div class="campo">
+                    <label for="password_actual">Contraseña actual</label>
+                    <input id="password_actual" name="password_actual" type="password" required autocomplete="current-password">
+                </div>
+                <div class="campo">
+                    <label for="password_nueva">Contraseña nueva</label>
+                    <input id="password_nueva" name="password_nueva" type="password" required minlength="8" maxlength="128" autocomplete="new-password">
+                    <p class="campo__ayuda">Mínimo 8 caracteres.</p>
+                </div>
+            </div>
+            <div class="acciones-formulario">
+                <button class="boton boton--secundario" type="submit">Actualizar contraseña</button>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', path='js/modulos/usuario.js') }}"></script>
+{% endblock %}
